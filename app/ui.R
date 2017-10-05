@@ -41,9 +41,9 @@ shinyUI(
                                ######Housing filter######
                     selectInput("university",
                                 label = "University",
-                                choices = c("columbia",
-                                            "nyu",
-                                            "fordham")
+                                choices = c("Columbia",
+                                            "NYU",
+                                            "Fordham")
                                 
                     ),
                     
@@ -67,28 +67,13 @@ shinyUI(
                       ),
                   
                                  ########Feature checkbox#######
-                    checkboxGroupInput("Crime", label = "Crime",
-                                       choices = c("Crime"),
-                                       selected = c("Crime")
-                    ),
-                    
-                    
-                    checkboxGroupInput("Transportation", label = "Transportation",
-                                       choices = c("Subway","Bus"),
-                                       selected = c("Subway","Bus")
-                    ),
-                    
-                    
-                    checkboxGroupInput("Market", label = "Market",
-                                       choices = c("Market"),
-                                       selected = c("Market")
-                    ),
-                    
-                    
-                    checkboxGroupInput("Entertainment", label = "Entertainment",
-                                       choices = c("Market"),
-                                       selected = c("Market")
-                     )
+                    checkboxInput("Crime", label = "Crime",value= FALSE),
+                    checkboxInput("Bus", label = "Bus",value= FALSE),
+                    checkboxInput("Subway",label="Subway",value = FALSE),
+                    checkboxInput("Market", label = "Market",value = FALSE),
+                    checkboxInput("Restaurant", label = "Restaurant",value= FALSE)
+
+                              
                     ),#side bar panel
               
                     ############main map#########
