@@ -18,6 +18,8 @@ library(dplyr)
 #save(restaurant, file="../output/restaurant.RData")
 load("../output/markets.RData")
 load("../output/restaurant.RData")
+load("../output/sub.station.RData")
+load("../output/bus.stop.RData")
   
 shinyServer(function(input, output) {
 
@@ -27,11 +29,40 @@ shinyServer(function(input, output) {
       leaflet() %>%
         addProviderTiles('Esri.WorldTopoMap') %>%
         setView(lng = -73.971035, lat = 40.775659, zoom = 12) 
-      # %>%
-      #   addMarkers(lat=markets$latitude, lng=markets$longitude,icon=icons(
-      #     iconUrl = "../output/icons8-Shopping Cart-48.png",
-      #     iconWidth = 7, iconHeight = 7, shadowWidth = 7, shadowHeight = 7))
     })
+  
+  ############Subway##############
+    observeEvent(input$Subway,{
+      p<-input$Subway
+      proxy<-leafletProxy("map")
+      
+      if(p==TRUE){
+          proxy %>% 
+          addMarkers(data=sub.station, ~lng, ~lat,label = ~info,icon=icons(
+            iconUrl = "../output/metro.png",
+            iconWidth = 7, iconHeight = 7),layerId=as.character(sub.station$info))
+        }
+      else proxy%>%removeMarker(layerId=as.character(sub.station$info))
+        
+    })
+  
+  ###############bus###############
+    observeEvent(input$Bus,{
+      p<-input$Bus
+      proxy<-leafletProxy("map")
+      
+      if(p==TRUE){
+        proxy %>% 
+          addMarkers(data=bus.stop, ~lng, ~lat,label = ~info,icon=icons(
+            iconUrl = "../output/bus.png",
+            iconWidth = 7, iconHeight = 7),layerId=as.character(bus.stop$info))
+      }
+      else proxy%>%removeMarker(layerId=as.character(bus.stop$info))
+        
+    })
+  
+  
+  ##############Market#####################
     observeEvent(input$Market,{
       p<- input$Market
       proxy<-leafletProxy("map")
@@ -47,7 +78,8 @@ shinyServer(function(input, output) {
       }
     })
 
-observeEvent(input$Restaurant,{
+  ##############Resturant#####################
+    observeEvent(input$Restaurant,{
       p<- input$Restaurant
       proxy<-leafletProxy("map")
       if(p==TRUE){
