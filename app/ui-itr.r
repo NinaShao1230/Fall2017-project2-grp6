@@ -1,42 +1,107 @@
-library(shiny)
-library(leaflet)
+#########################################################################################################load library
+library("shiny")
+library("shinydashboard")
+library("highcharter")
+library("dplyr")
+library("viridisLite")
+library("markdown")
+library("quantmod")
+library("tidyr")
+library("treemap")
+library("forecast")
+library("DT")
+library("shiny")
+library("leaflet")
+library("plotly")
+library("wordcloud2")
+library('scatterD3')
 
-# Define UI for application that draws a histogram
-shinyUI(fluidPage(
-  
-  # Application title
-  titlePanel("2009 Manhattan Housing Sales"),
-  
-  # Sidebar with a selector input for neighborhood
-  sidebarLayout(
-    sidebarPanel(
-      selectInput("nbhd", label = h5("Choose a Manhattan Neighborhood"), 
-                         choices = list("all neighborhoods"=0,
-                                        "Central Harlem"=1, 
-                                        "Chelsea and Clinton"=2,
-                                        "East Harlem"=3, 
-                                        "Gramercy Park and Murray Hill"=4,
-                                        "Greenwich Village and Soho"=5, 
-                                        "Lower Manhattan"=6,
-                                        "Lower East Side"=7, 
-                                        "Upper East Side"=8, 
-                                        "Upper West Side"=9,
-                                        "Inwood and Washington Heights"=10), 
-                         selected = 0)
-      #sliderInput("p.range", label=h3("Price Range (in thousands of dollars)"),
-      #            min = 0, max = 20000, value = c(200, 10000))
-    ),
-    # Show two panels
-    mainPanel(
-      #h4(textOutput("text")),
-      h3(code(textOutput("text1"))),
-      tabsetPanel(
-        # Panel 1 has three summary plots of sales. 
-        tabPanel("Sales summary", plotOutput("distPlot")), 
-        # Panel 2 has a map display of sales' distribution
-        tabPanel("Sales map", plotOutput("distPlot1"))),
-      leafletOutput("map", width = "80%", height = "400px")
+#########################################################################################################clear environment
+rm(list = ls())
+
+#########################################################################################################main page begin
+dashboardPage(
+  dashboardHeader(title = "Renting in Manhattan", disable = FALSE),
+  dashboardSidebar(
+    sidebarSearchForm(textId = "searchText", buttonId = "searchButton",
+                      label = "Search..."),
+    # sidebarPanel(
+    #   checkboxGroupInput("Cateogry", label = "Category",
+    #                      choices = c("Crime", "Resteruant", "Super Market",
+    #                                  "Subway", "Bus"),
+    #                      selected = c("Crime", "Resteruant", "Super Market",
+    #                                   "Subway", "Bus")
+    #   )
+    # ),
+    sidebarMenu(
+      #menuItem("Map", tabName = "map", icon = icon("map-marker")),
+      menuItem("Transportation", tabName = "trans", icon = icon("subway")),
+      menuItem("Crime",tabName = "crime", icon= icon("exclamation-triangle")),
+      menuItem("Markets",tabName = "markets", icon = icon("shopping-cart")),
+      menuItem("Restaurant", tabName = "restaurant", icon = icon("cutlery")),
+      menuItem("University", tabName = "university", icon = icon("university")),
+      menuItem("Entertainment",tabName = "entertainment", icon = icon("paper-plane-o")),
+      menuItem("Recommendation System",tabName = "Recommendation System", icon = icon("thumbs-up")))
+  ),
+  dashboardBody(
+    tags$head(tags$script(src = "js/ga.js")),
+    tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "css/custom_fixs.css")),
+    tabItems
+    (
+      
+      ################################################################################################ transportation
+      tabItem
+      (
+        tabName = "trans", 
+        sidebarLayout(position = "right", 
+                      sidebarPanel
+                      (
+                        checkboxGroupInput("Transportation Type", label = "Transportation Type",
+                                           choices = c("Bus","Subway"),
+                                           selected = c("Bus","Subway"))
+                        ),
+                        mainPanel(leafletOutput("map", width = "100%", height = 650))
+      )),
+
+      ################################################################################################  crime
+      tabItem(tabName = "crime",
+             sidebarLayout(position="right",
+                           sidebarPanel=NULL,
+                           mainPanel(leafletOutput("map", width = "100%", height = 650))
+                           )),
+
+      ################################################################################################   markets
+      tabItem(tabName = "markets",
+              sidebarLayout(position="right",
+                            sidebarPanel=NULL,
+                            mainPanel(leafletOutput("map", width = "100%", height = 650))
+              )),
+
+      ################################################################################################    restuarants
+      tabItem(tabName = "restaurant",
+              sidebarLayout(position="right",
+                            sidebarPanel=NULL,
+                            mainPanel(leafletOutput("map", width = "100%", height = 650))
+                            )),
+
+      ################################################################################################  university
+      tabItem(tabName = "university",
+              sidebarLayout(position="right",
+                            sidebarPanel=NULL,
+                            mainPanel(leafletOutput("map", width = "100%", height = 650))
+                    )),
+      ################################################################################################ entertainment
+      tabItem(tabName = "entertainment",
+              sidebarLayout(position="right",
+                            sidebarPanel=NULL,
+                            mainPanel(leafletOutput("map", width = "100%", height = 650))
+                            )),
+      ###############################################################################################recommendation system
+      tabItem(tabName = "Recommendation System",
+              sidebarLayout(position="right",
+                            sidebarPanel=NULL,
+                            mainPanel(leafletOutput("map", width = "100%", height = 650))
+                            ))
+              )
     )
  )
-))
-
