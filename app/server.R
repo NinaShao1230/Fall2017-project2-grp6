@@ -39,11 +39,11 @@ shinyServer(function(input, output) {
         proxy%>%
          addMarkers(lat=markets$latitude, lng=markets$longitude,icon=icons(
             iconUrl = "../output/icons8-Shopping Cart-48.png",
-            iconWidth = 7, iconHeight = 7, shadowWidth = 7, shadowHeight = 7),layerId=markets$License.Number[1:400],group="marker")
+            iconWidth = 7, iconHeight = 7, shadowWidth = 7, shadowHeight = 7),layerId=as.character(markets$License.Number))
       }
       else{
         proxy %>%
-          removeMarker(layerId=markets$License.Number[1:400])
+          removeMarker(layerId=as.character(markets$License.Number))
       }
     })
 
@@ -54,11 +54,11 @@ observeEvent(input$Restaurant,{
         proxy%>%
           addMarkers(lat=restaurant$lat, lng=restaurant$lon,icon=icons(
             iconUrl = "../output/icons8-French Fries-96.png",
-            iconWidth = 7, iconHeight = 7, shadowWidth = 7, shadowHeight = 7))
+            iconWidth = 7, iconHeight = 7, shadowWidth = 7, shadowHeight = 7),layerId=as.character(restaurant$CAMIS))
       }
       else{
         proxy %>%
-          clearMarkers()
+          removeMarker(layerId=as.character(restaurant$CAMIS))
       }
     })
     
