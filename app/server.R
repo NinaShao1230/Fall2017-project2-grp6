@@ -7,6 +7,14 @@ library(MASS)
 #library(vcd)
 #library(zipcode)
 library(dplyr)
+library(tigris)
+library(sp)
+library(maptools)
+library(broom)
+library(httr)
+library(rgdal)
+library(RColorBrewer)
+
 #install_github('arilamstein/choroplethrZip@v1.5.0')
 
 #housing<- read.csv("../data/truliaRentPrice/housing_geo.csv",header=TRUE, stringsAsFactors =FALSE)
@@ -23,6 +31,14 @@ load("../output/restaurant.RData")
 load("../output/sub.station.RData")
 load("../output/bus.stop.RData")
 load("../output/housing.RData")  
+load("../output/crimedata.RData")
+#### data processing for crime data
+r<-GET('http://catalog.civicdashboards.com/dataset/11fd957a-8885-42ef-aa49-5c879ec93fac/resource/28377e88-8a50-428f-807c-40ba1f09159b/download/nyc-zip-code-tabulation-areas-polygons.geojson')
+nyc <- readOGR(content(r,'text'), 'OGRGeoJSON', verbose = F)
+data<-crimedata
+nyc@data$count = data$num_points
+pal = colorBin(color[[1]], bins = bin[[1]])
+
 
 shinyServer(function(input, output) {
   
@@ -134,7 +150,19 @@ shinyServer(function(input, output) {
     else proxy%>%removeMarker(layerId=as.character(bus.stop$info))
     
   })
-  
+   ##############Crime#####################
+    observeEvent(input$Crime,{
+      p<-input$Crime
+      proxy<-leafletProxy("map")
+      
+      if(p==TRUE){
+        proxy %>% 
+          addPolygons(data=nyc, fillColor = ~pal(count), color = 'grey', weight = 1,
+                      fillOpacity = .6) 
+      }
+      else proxy%>%clearShapes()
+      
+    })
   
   ##############Market#####################
   observeEvent(input$Market,{
