@@ -31,13 +31,8 @@ load("../output/restaurant.RData")
 load("../output/sub.station.RData")
 load("../output/bus.stop.RData")
 load("../output/housing.RData")  
-load("../output/crimedata.RData")
-#### data processing for crime data
-r<-GET('http://catalog.civicdashboards.com/dataset/11fd957a-8885-42ef-aa49-5c879ec93fac/resource/28377e88-8a50-428f-807c-40ba1f09159b/download/nyc-zip-code-tabulation-areas-polygons.geojson')
-nyc <- readOGR(content(r,'text'), 'OGRGeoJSON', verbose = F)
-data<-crimedata
-nyc@data$count = data$num_points
-pal = colorBin(color[[1]], bins = bin[[1]])
+load("../output/nyc.RData")
+
 
 
 shinyServer(function(input, output) {
