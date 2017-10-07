@@ -142,7 +142,7 @@ shinyServer(function(input, output) {
     if(p==TRUE){
       proxy %>% 
         addMarkers(data=bus.stop, ~lng, ~lat,label = ~info,icon=icons(
-          iconUrl = "../output/bus.png",
+          iconUrl = "../output/icons8-Bus-48.png",
           iconWidth = 7, iconHeight = 7),layerId=as.character(bus.stop$info))
     }
     else proxy%>%removeMarker(layerId=as.character(bus.stop$info))
