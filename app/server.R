@@ -33,7 +33,8 @@ load("../output/bus.stop.RData")
 load("../output/housing.RData")  
 load("../output/nyc.RData")
 
-pal = colorBin(color[[1]], bins = bin[[1]])
+ins <- c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)
+pal <- colorBin("YlOrRd", domain = states$density, bins = bins)
 
 
 
