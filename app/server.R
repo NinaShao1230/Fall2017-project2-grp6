@@ -9,7 +9,9 @@ library(MASS)
 library(dplyr)
 #install_github('arilamstein/choroplethrZip@v1.5.0')
 
-  
+#housing<- read.csv("../data/truliaRentPrice/housing_geo.csv",header=TRUE, stringsAsFactors =FALSE)
+#housing<- subset(housing, !is.na(lng))
+#save(housing, file="../output/housing.RData")
 #markets<- read.csv("../data/markets.csv",header=TRUE, stringsAsFactors =FALSE)
 #markets<- subset(markets, !is.na(longitude))
 #markets<- markets[(markets$Square.Footage>=1500)&(markets$City=="NEW YORK"), ]
@@ -20,7 +22,8 @@ load("../output/markets.RData")
 load("../output/restaurant.RData")
 load("../output/sub.station.RData")
 load("../output/bus.stop.RData")
-  
+load("../output/housing.RData")  
+
 shinyServer(function(input, output) {
 
   #Esri.WorldTopoMap
@@ -28,9 +31,80 @@ shinyServer(function(input, output) {
     output$map <- renderLeaflet({
       leaflet() %>%
         addProviderTiles('Esri.WorldTopoMap') %>%
-        setView(lng = -73.971035, lat = 40.775659, zoom = 12) 
+        setView(lng = -73.971035, lat = 40.775659, zoom = 12) %>%
+        addMarkers(data=housing,
+                         lng=~lng,
+                         lat=~lat,
+                         clusterOptions=markerClusterOptions(),
+                         group="housing_cluster"
+                      
+                         
+                         
+        )
     })
-  
+    # show current status of icons:
+    
+    showStatus=reactive({
+      if (is.null(input$map_bounds)){
+        return("cloud")
+        
+      }
+      else{
+        if(input$map_zoom<16){
+          return('cloud')
+        }
+        else{
+          return('details')
+        }
+      }
+    })
+    # hide and show clouds 
+    observe({
+     if(showStatus()=="cloud"){
+       
+       leafletProxy("map") %>%showGroup("housing_cluster")%>%clearGroup("new_added")
+     }
+      else{
+        leafletProxy("map") %>%hideGroup("housing_cluster")
+        
+      }
+    })
+    
+    # show housing details when zoom to one specific level
+    
+    observe({
+      if(showStatus()=="details"){
+        leafletProxy("map")%>%clearGroup(group="new_added")%>% 
+                              addLabelOnlyMarkers(data=marksInBounds(),
+                                          lat=~lat,
+                                          lng=~lng,
+                                          label=~as.character(price),
+                                          group="new_added",
+                                          labelOptions = labelOptions(noHide = T,offset=c(20,-15),opacity=0.7)
+                                          
+                                          )
+        
+      }
+      
+      
+      
+      
+    })
+    
+    # get the housing data in the bounds
+    marksInBounds <- reactive({
+      if (is.null(input$map_bounds))
+        return(data[FALSE,])
+      bounds <- input$map_bounds
+      latRng <- range(bounds$north, bounds$south)
+      lngRng <- range(bounds$east, bounds$west)
+      
+      subset(housing,
+             lat>= latRng[1] & lat <= latRng[2] &
+               lng >= lngRng[1] & lng <= lngRng[2])
+      
+    })
+   
   ############Subway##############
     observeEvent(input$Subway,{
       p<-input$Subway
@@ -40,9 +114,9 @@ shinyServer(function(input, output) {
           proxy %>% 
           addMarkers(data=sub.station, ~lng, ~lat,label = ~info,icon=icons(
             iconUrl = "../output/metro.png",
-            iconWidth = 7, iconHeight = 7),layerId=as.character(sub.station$info))
+            iconWidth = 7, iconHeight = 7),group="subway")
         }
-      else proxy%>%removeMarker(layerId=as.character(sub.station$info))
+      else proxy%>%clearGroup(group="subway")
         
     })
   

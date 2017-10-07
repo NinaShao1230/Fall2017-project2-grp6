@@ -25,7 +25,13 @@ shinyUI(
                       br(),
                       h3("Find housing around campus" ),
                       br(),
-                      h4("Gourp6- Fall 2017")
+                      h4("Gourp6- Fall 2017"),
+                      
+                      tags$head(
+                        # Include our custom CSS
+                        includeCSS("styles.css")
+                        
+                      )
                       
                       
              ),
