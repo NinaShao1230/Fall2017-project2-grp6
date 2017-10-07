@@ -54,52 +54,39 @@ shinyUI(
                     ),
                     
                     
-                    actionButton("manual_bedR",
-                                label = "2 -3 beds"
+                    selectInput("min_bedrooms",
+                                label = "min number of bedrooms",
+                                choices = c("Studio" = 0,
+                                            "1b" = 1,
+                                            "2b" = 2,
+                                            "3b" = 3,
+                                            "4b" = 4)
                     ),
-                    br(),
-                    
-                    tags$ul(id="ul_top_hypers",
-                      tags$li(
-                        
-                                 tags$select(
-                                   id="minBedrooms",
-                                   tags$option(value="0","No min"),
-                                   tags$option(value="1","1"),
-                                   tags$option(value="2","2"),
-                                   tags$option(value="3","3"),
-                                   tags$option(value="4","4"),
-                                   tags$option(value="5","5")
-                                   
-                                  )
-                                 
-                      ),
-                      tags$li("-"),
-                      
-                      tags$li(
-                        
-                                 tags$select(
-                                   id="maxBedrooms",
-                                   tags$option(value="0","No min"),
-                                   tags$option(value="1","1"),
-                                   tags$option(value="2","2"),
-                                   tags$option(value="3","3"),
-                                   tags$option(value="4","4"),
-                                   tags$option(value="5","5")
-                                   
-                                 )
-                        
-                      )
+                    selectInput("max_bedrooms",
+                                label = "max number of bedrooms",
+                                choices = c("Studio" = 0,
+                                            "1b" = 1,
+                                            "2b" = 2,
+                                            "3b" = 3,
+                                            "4b" = 4)
                     ),
-                    
-                    selectInput("manual_bathR",
+                    selectInput("min_bath",
                                 label = "Number of bathrooms",
                                 choices = c("Studio" = 0,
-                                            "1+" = 1,
-                                            "2+" = 2,
-                                            "3+" = 3,
-                                            "4+" = 4)
-                    ), 
+                                            "1b" = 1,
+                                            "2b" = 2,
+                                            "3b" = 3,
+                                            "4b" = 4)
+                    ),
+                    selectInput("max_bath",
+                                label = "Number of bathrooms",
+                                choices = c("Studio" = 0,
+                                            "1b" = 1,
+                                            "2b" = 2,
+                                            "3b" = 3,
+                                            "4b" = 4)
+                    ),
+                    
                     sliderInput("manual_rent",
                                 label = "Rent range",
                                 min = 850,
@@ -108,7 +95,6 @@ shinyUI(
                                 step = 100,
                                 round = TRUE
                       ),
-                    
                   
                                  ########Feature checkbox#######
                     checkboxInput("Crime", label = "Crime",value= FALSE),

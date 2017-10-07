@@ -18,6 +18,7 @@ library(dplyr)
 #save(markets, file="../output/markets.RData")
 #restaurant=read.csv("../data/restaurant_data.csv",header=TRUE, stringsAsFactors =FALSE)
 #save(restaurant, file="../output/restaurant.RData")
+
 load("../output/markets.RData")
 load("../output/restaurant.RData")
 load("../output/sub.station.RData")
@@ -41,6 +42,16 @@ shinyServer(function(input, output) {
                          
                          
         )
+    })
+    
+    # filter housing data:
+    
+    housingFilter=reactive({
+      bedroom_filter=housing$bedrooms>input$min_bedrooms & housing$bedrooms<input$max_bedrooms 
+      bathroom_filter=housing$bathrooms>input$min_bath & housing$bathrooms<input$max_bath
+      price_filter=housing$price>input$manual_rent[0] & housing$price<input$manual_rent[1]
+      filter=bedroom_filter & bathroom_filter & price_filter
+      housing[filter,]
     })
     # show current status of icons:
     
@@ -104,6 +115,8 @@ shinyServer(function(input, output) {
                lng >= lngRng[1] & lng <= lngRng[2])
       
     })
+    
+  
    
   ############Subway##############
     observeEvent(input$Subway,{
@@ -129,9 +142,9 @@ shinyServer(function(input, output) {
         proxy %>% 
           addMarkers(data=bus.stop, ~lng, ~lat,label = ~info,icon=icons(
             iconUrl = "../output/bus.png",
-            iconWidth = 7, iconHeight = 7),layerId=as.character(bus.stop$info))
+            iconWidth = 7, iconHeight = 7),group="bus")
       }
-      else proxy%>%removeMarker(layerId=as.character(bus.stop$info))
+      else proxy%>%clearGroup("bus")
         
     })
   
