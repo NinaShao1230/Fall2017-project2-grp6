@@ -11,6 +11,10 @@ library(dplyr)
 
 #housing<- read.csv("../data/truliaRentPrice/housing_geo.csv",header=TRUE, stringsAsFactors =FALSE)
 #housing<- subset(housing, !is.na(lng))
+#price=gsub(",","",housing$price)
+#price=as.numeric(price)
+#housing$price=price
+#housing=housing[!is.na(housing$price),]
 #save(housing, file="../output/housing.RData")
 #markets<- read.csv("../data/markets.csv",header=TRUE, stringsAsFactors =FALSE)
 #markets<- subset(markets, !is.na(longitude))
@@ -32,26 +36,30 @@ shinyServer(function(input, output) {
     output$map <- renderLeaflet({
       leaflet() %>%
         addProviderTiles('Esri.WorldTopoMap') %>%
-        setView(lng = -73.971035, lat = 40.775659, zoom = 12) %>%
-        addMarkers(data=housing,
-                         lng=~lng,
-                         lat=~lat,
-                         clusterOptions=markerClusterOptions(),
-                         group="housing_cluster"
-                      
-                         
-                         
-        )
+        setView(lng = -73.971035, lat = 40.775659, zoom = 12)
+     
     })
+    
+    ############# housing #############
     
     # filter housing data:
     
     housingFilter=reactive({
       bedroom_filter=housing$bedrooms>input$min_bedrooms & housing$bedrooms<input$max_bedrooms 
       bathroom_filter=housing$bathrooms>input$min_bath & housing$bathrooms<input$max_bath
-      price_filter=housing$price>input$manual_rent[0] & housing$price<input$manual_rent[1]
+      price_filter=housing$price>input$manual_rent[1] & housing$price<input$manual_rent[2]
       filter=bedroom_filter & bathroom_filter & price_filter
-      housing[filter,]
+      return(housing[filter,])
+    })
+    
+    # show data in the map:
+    observe({leafletProxy("map")%>%
+    addMarkers(data=housingFilter(),
+               lng=~lng,
+               lat=~lat,
+               clusterOptions=markerClusterOptions(),
+               group="housing_cluster"
+      )
     })
     # show current status of icons:
     
@@ -110,7 +118,7 @@ shinyServer(function(input, output) {
       latRng <- range(bounds$north, bounds$south)
       lngRng <- range(bounds$east, bounds$west)
       
-      subset(housing,
+      subset(housingFilter(),
              lat>= latRng[1] & lat <= latRng[2] &
                lng >= lngRng[1] & lng <= lngRng[2])
       
