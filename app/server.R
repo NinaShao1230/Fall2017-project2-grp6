@@ -33,6 +33,8 @@ load("../output/bus.stop.RData")
 load("../output/housing.RData")  
 load("../output/nyc.RData")
 
+pal = colorBin(color[[1]], bins = bin[[1]])
+
 
 
 shinyServer(function(input, output) {
