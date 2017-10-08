@@ -45,9 +45,9 @@ shinyServer(function(input, output) {
     # filter housing data:
     
     housingFilter=reactive({
-      bedroom_filter=housing$bedrooms>input$min_bedrooms & housing$bedrooms<input$max_bedrooms 
-      bathroom_filter=housing$bathrooms>input$min_bath & housing$bathrooms<input$max_bath
-      price_filter=housing$price>input$manual_rent[1] & housing$price<input$manual_rent[2]
+      bedroom_filter=housing$bedrooms>=input$min_bedrooms & housing$bedrooms<=input$max_bedrooms 
+      bathroom_filter=housing$bathrooms>=input$min_bath & housing$bathrooms<=input$max_bath
+      price_filter=housing$price>=input$manual_rent[1] & housing$price<=input$manual_rent[2]
       filter=bedroom_filter & bathroom_filter & price_filter
       return(housing[filter,])
     })
@@ -93,15 +93,30 @@ shinyServer(function(input, output) {
     
     observe({
       if(showStatus()=="details"){
-        leafletProxy("map")%>%clearGroup(group="new_added")%>% 
-                              addLabelOnlyMarkers(data=marksInBounds(),
-                                          lat=~lat,
-                                          lng=~lng,
-                                          label=~as.character(price),
-                                          group="new_added",
-                                          labelOptions = labelOptions(noHide = T,offset=c(20,-15),opacity=0.7)
+        if(nrow(marksInBounds())!=0){
+          leafletProxy("map")%>%clearGroup(group="new_added")%>% 
+            addLabelOnlyMarkers(data=marksInBounds(),
+                                lat=~lat,
+                                lng=~lng,
+                                label=~as.character(price),
+                                group="new_added",
+                                labelOptions = labelOptions(
+                                                noHide = T,
+                                                offset=c(20,-15),
+                                                opacity=0.7,
+                                                style=list(
+                                                  background="green",
+                                                  color="white"  
+                                                  )
+                                                )
+                                )
+        }
+        else{
+          leafletProxy("map")%>%clearGroup(group="new_added")
+        }
+        
+        
                                           
-                                          )
         
       }
       
@@ -113,20 +128,67 @@ shinyServer(function(input, output) {
     # get the housing data in the bounds
     marksInBounds <- reactive({
       if (is.null(input$map_bounds))
-        return(data[FALSE,])
+        return(housing[FALSE,])
       bounds <- input$map_bounds
       latRng <- range(bounds$north, bounds$south)
       lngRng <- range(bounds$east, bounds$west)
       
-      subset(housingFilter(),
-             lat>= latRng[1] & lat <= latRng[2] &
-               lng >= lngRng[1] & lng <= lngRng[2])
-      
+      return(
+        subset(housingFilter(),
+          lat>= latRng[1] & lat <= latRng[2] &
+          lng >= lngRng[1] & lng <= lngRng[2])
+      )
     })
     
-  
-   
-  ############Subway##############
+    # sort housing in current zoom level
+    
+    observe({
+      sortBy=input$sortBy
+      housing_filtered=marksInBounds()
+      if(nrow(housing_filtered)==0){
+       housing_top10=housing_filtered 
+      }
+      else if(sortBy=="price_low_high"){
+        housing_top10=housing_filtered[order(housing_filtered$price),]
+      }
+      else if(sortBy=="price_high_low"){
+        housing_top10=housing_filtered[order(housing_filtered$price,decreasing = TRUE),]
+      }
+      
+      else if(sortBy=="bedrooms"){
+        housing_top10=housing_filtered[order(housing_filtered$bedrooms,decreasing = TRUE),]
+      }
+      else if(sortBy=="restrooms"){
+        housing_top10=housing_filtered[order(housing_filtered$bathrooms,decreasing = TRUE),]
+      }
+      
+      if(nrow(housing_top10)!=0){
+        show_num=ifelse(nrow(housing_top10)>10,10,nrow(housing_top10))
+        top10info=apply(housing_top10[1:show_num,],1,function(r){
+        
+        paste0("address:",r["addr"],
+               "price:",r["price"],
+               " bedrooms:",r["bedrooms"],
+               " bathrooms:",r["bathrooms"],"\n")  
+         
+         
+        }
+       )
+        output$rank=renderText(paste(top10info,collapse = ""))
+        
+      }
+      else{
+        output$rank=renderText('')
+      }
+      
+     
+      
+    })
+      
+      
+ 
+     
+   ############Subway##############
     observeEvent(input$Subway,{
       p<-input$Subway
       proxy<-leafletProxy("map")

@@ -97,12 +97,27 @@ shinyUI(
                       ),
                   
                                  ########Feature checkbox#######
-                    checkboxInput("Crime", label = "Crime",value= FALSE),
-                    checkboxInput("Bus", label = "Bus",value= FALSE),
-                    checkboxInput("Subway",label="Subway",value = FALSE),
-                    checkboxInput("Market", label = "Market",value = FALSE),
-                    checkboxInput("Restaurant", label = "Restaurant",value= FALSE)
-
+                    #checkboxInput("Crime", label = "Crime",value= FALSE),
+                    #checkboxInput("Bus", label = "Bus",value= FALSE),
+                    #checkboxInput("Subway",label="Subway",value = FALSE),
+                    #checkboxInput("Market", label = "Market",value = FALSE),
+                    #checkboxInput("Restaurant", label = "Restaurant",value= FALSE),
+                    
+                    selectInput("sortBy",
+                                label = "sortBy",
+                                choices = c("price(Low To High)" = "price_low_high",
+                                            "price(High To Low)" = "price_high_low",
+                                            "bedrooms" = "bedrooms",
+                                            "restrooms" = "restrooms"
+                                            )
+                    ),
+                    absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
+                                  draggable = TRUE, top = "auto", left = "20", right = "auto", bottom = 60,
+                                  width = 300, height = "auto",
+                                  
+                                  h5("current rank"),
+                                  verbatimTextOutput("rank")
+                    )
                               
                     ),#side bar panel
               
