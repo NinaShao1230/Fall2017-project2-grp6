@@ -33,10 +33,17 @@ load("../output/bus.stop.RData")
 load("../output/housing.RData")  
 load("../output/nyc.RData")
 
+<<<<<<< HEAD
 color <- list(color1 = c('#F2D7D5','#D98880', '#CD6155', '#C0392B', '#922B21','#641E16'),  
               color2 = c('#e6f5ff','#abdcff', '#70c4ff', '#0087e6', '#005998','#00365d','#1B4F72'),  
               color3 = c("#F7FCF5","#74C476", "#005A32"))  
 bin <- list(bin1 = c(0,100,1000,10000,100000,1000000,10000000), bin2 = c(0,1,2,3,4,5,6,7))  
+=======
+color <- list(color1 = c('#F2D7D5','#D98880', '#CD6155', '#C0392B', '#922B21','#641E16'),
+             color2 = c('#e6f5ff','#abdcff', '#70c4ff', '#0087e6', '#005998','#00365d','#1B4F72'),
+             color3 = c("#F7FCF5","#74C476", "#005A32"))
+bin <- list(bin1 = c(0,100,1000,10000,100000,1000000,10000000), bin2 = c(0,1,2,3,4,5,6,7))
+>>>>>>> origin/master
 pal <- colorBin(color[[1]], bins = bin[[1]])
 
 
