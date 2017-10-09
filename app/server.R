@@ -15,7 +15,7 @@ library(httr)
 library(rgdal)
 library(RColorBrewer)
 
-#install_github('arilamstein/choroplethrZip@v1.5.0')
+library(XML)
 
 #housing<- read.csv("../data/truliaRentPrice/housing_geo.csv",header=TRUE, stringsAsFactors =FALSE)
 #housing<- subset(housing, !is.na(lng))
@@ -33,12 +33,14 @@ load("../output/bus.stop.RData")
 load("../output/housing.RData")  
 load("../output/nyc.RData")
 
-bins <- c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)
-pal <- colorBin("YlOrRd", bins = bins)
+color <- list(color1 = c('#F2D7D5','#D98880', '#CD6155', '#C0392B', '#922B21','#641E16'),  
+              color2 = c('#e6f5ff','#abdcff', '#70c4ff', '#0087e6', '#005998','#00365d','#1B4F72'),  
+              color3 = c("#F7FCF5","#74C476", "#005A32"))  
+bin <- list(bin1 = c(0,100,1000,10000,100000,1000000,10000000), bin2 = c(0,1,2,3,4,5,6,7))  
+pal <- colorBin(color[[1]], bins = bin[[1]])
 
 
-
-shinyServer(function(input, output) {
+shinyServer(function(input, output,session) {
   
   #Esri.WorldTopoMap
   #########main map######
@@ -118,55 +120,132 @@ shinyServer(function(input, output) {
              lng >= lngRng[1] & lng <= lngRng[2])
     
   })
-  
-  ############Subway##############
-  observeEvent(input$Subway,{
-    p<-input$Subway
-    proxy<-leafletProxy("map")
+  #############Search##############
+  # geocodeAdddress <- function(address) {
+  #        require(RJSONIO)
+  #        url <- "http://maps.google.com/maps/api/geocode/json?address="
+  #        url <- URLencode(paste(url, address, "&sensor=false", sep = ""))
+  #        x <- fromJSON(url, simplify = FALSE)
+  #       if (x$status == "OK") {
+  #            out <- c(x$results[[1]]$geometry$location$lng,
+  #                                      x$results[[1]]$geometry$location$lat)
+  #          } else {
+  #              out <- NA
+  #            }
+  #        Sys.sleep(0.2)  # API only allows 5 requests per second
+  #        out
+  #      }
+  # #geocodeAdddress("time square")
+  # # observe({
+  # #   proxy<-leafletProxy("map")
+  # #   output$test=renderText(input$place)
+  # #   proxy%>% setView(lng=geocodeAdddress(x)[1], lat=geocodeAdddress(x)[2],zoom=15)
+  # # 
+  # # })
+  #############Search###############
+  observeEvent(input$button1,{
+    url = paste0('http://maps.google.com/maps/api/geocode/xml?address=',input$location,'&sensor=false')
+    doc = xmlTreeParse(url) 
+    root = xmlRoot(doc) 
+    lati = as.numeric(xmlValue(root[['result']][['geometry']][['location']][['lat']])) 
+    long = as.numeric(xmlValue(root[['result']][['geometry']][['location']][['lng']]))
     
-    if(p==TRUE){
-      proxy %>% 
+    leafletProxy("map") %>%
+      setView(lng=long, lat=lati,zoom=15)%>%
+      addMarkers(lng=long,lat=lati,layerId = "1",icon=icons(
+        iconUrl = "../output/icons8-Location-50.png",iconWidth = 25, iconHeight = 25))
+  })
+  #################Clear Search############
+  observeEvent(input$button2,{
+    proxy<-leafletProxy("map")
+    proxy %>%
+      setView(lng = -73.971035, lat = 40.775659, zoom = 12) %>%
+      removeMarker(layerId="1")
+    updateTextInput(session, inputId="location", value = "")
+  }
+    
+  )
+  ##################ALL FILTERS############
+  # observeEvent(input$filters,{
+  #   p<-input$filters
+  #   proxy<-leafletProxy("map")
+  #   groups<-c("Subway","Bus","Restaurant","Market","crime")
+  # 
+  #   if(p==TRUE){
+  #     proxy %>%
+  #       addMarkers(data=sub.station, ~lng, ~lat,label = ~info,icon=icons(
+  #         iconUrl = "../output/metro.png",
+  #         iconWidth = 7, iconHeight = 7),group="Subway")%>%
+  #       addMarkers(data=bus.stop, ~lng, ~lat,label = ~info,icon=icons(
+  #         iconUrl = "../output/icons8-Bus-48.png",
+  #         iconWidth = 7, iconHeight = 7),group="Bus")%>%
+  #       addMarkers(lat=restaurant$lat, lng=restaurant$lon,label=restaurant$DBA,icon=icons(
+  #         iconUrl = "../output/icons8-French Fries-96.png",
+  #         iconWidth = 7, iconHeight = 7, shadowWidth = 7, shadowHeight = 7),group="Restaurant") %>%
+  #       addMarkers(lat=markets$latitude, lng=markets$longitude,label=markets$DBA.Name, icon=icons(
+  #         iconUrl = "../output/icons8-Shopping Cart-48.png",
+  #         iconWidth = 7, iconHeight = 7, shadowWidth = 7, shadowHeight = 7),group="Market")%>%
+  #       addPolygons(data=nyc, fillColor = ~pal(count), color = 'grey', weight = 1,
+  #                   fillOpacity = .6,group="crime") %>%
+  #       addLayersControl(overlayGroups = groups, options = layersControlOptions(collapsed = FALSE))%>%
+  #       hideGroup("Subway")%>%
+  #       hideGroup("Bus")%>%
+  #       hideGroup("Crime")%>%
+  #       hideGroup("Restaurant")
+  # 
+  #   }
+  # 
+  # })
+
+  #############Clear button###########
+  observeEvent(input$clear, {
+    leafletProxy('map')%>% setView(lng = -73.971035, lat = 40.775659, zoom = 12)
+
+  })
+  ############Subway##############
+  observeEvent("Subway"%in% input$filters,{
+    
+    proxy<-leafletProxy("map")
+
+    if("Subway"%in% input$filters){
+      proxy %>%
         addMarkers(data=sub.station, ~lng, ~lat,label = ~info,icon=icons(
           iconUrl = "../output/metro.png",
           iconWidth = 7, iconHeight = 7),group="subway")
     }
     else proxy%>%clearGroup(group="subway")
-    
+
   })
-  
+
   ###############bus###############
-  observeEvent(input$Bus,{
-    p<-input$Bus
+  observeEvent("Bus"%in% input$filters,{
     proxy<-leafletProxy("map")
-    
-    if(p==TRUE){
-      proxy %>% 
+    if("Bus"%in% input$filters){
+      proxy %>%
         addMarkers(data=bus.stop, ~lng, ~lat,label = ~info,icon=icons(
           iconUrl = "../output/icons8-Bus-48.png",
           iconWidth = 7, iconHeight = 7),layerId=as.character(bus.stop$info))
     }
     else proxy%>%removeMarker(layerId=as.character(bus.stop$info))
-    
+
   })
    ##############Crime#####################
-    observeEvent(input$Crime,{
-      p<-input$Crime
+    observeEvent("Crime"%in% input$filters,{
       proxy<-leafletProxy("map")
-      
-      if(p==TRUE){
-        proxy %>% 
+
+      if("Crime"%in% input$filters){
+        proxy %>%
           addPolygons(data=nyc, fillColor = ~pal(count), color = 'grey', weight = 1,
-                      fillOpacity = .6) 
+                      fillOpacity = .6)
       }
       else proxy%>%clearShapes()
-      
+
     })
-  
+
   ##############Market#####################
-  observeEvent(input$Market,{
-    p<- input$Market
+  observeEvent("Market"%in% input$filters,{
     proxy<-leafletProxy("map")
-    if(p==TRUE){
+    if("Market"%in% input$filters){
       proxy%>%
         addMarkers(lat=markets$latitude, lng=markets$longitude,label=markets$DBA.Name, icon=icons(
           iconUrl = "../output/icons8-Shopping Cart-48.png",
@@ -177,12 +256,11 @@ shinyServer(function(input, output) {
         removeMarker(layerId=as.character(markets$License.Number))
     }
   })
-  
+
   ##############Resturant#####################
-  observeEvent(input$Restaurant,{
-    p<- input$Restaurant
+  observeEvent("Restaurant"%in% input$filters,{
     proxy<-leafletProxy("map")
-    if(p==TRUE){
+    if("Restaurant"%in% input$filters){
       proxy%>%
         addMarkers(lat=restaurant$lat, lng=restaurant$lon,label=restaurant$DBA,icon=icons(
           iconUrl = "../output/icons8-French Fries-96.png",
@@ -193,9 +271,9 @@ shinyServer(function(input, output) {
         removeMarker(layerId=as.character(restaurant$CAMIS))
     }
   })
-  
-  
-  
+
+
+
   #######for statistics#####
   
   output$plot=renderPlot({
