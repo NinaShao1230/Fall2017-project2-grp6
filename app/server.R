@@ -265,11 +265,11 @@ shinyServer(function(input, output,session) {
       proxy%>%
         addMarkers(lat=restaurant$lat, lng=restaurant$lon,label=restaurant$DBA,icon=icons(
           iconUrl = "../output/icons8-French Fries-96.png",
-          iconWidth = 7, iconHeight = 7, shadowWidth = 7, shadowHeight = 7),layerId=as.character(restaurant$CAMIS))
+          iconWidth = 7, iconHeight = 7, shadowWidth = 7, shadowHeight = 7),layerId=as.character(restaurant$PHONE))
     }
     else{
       proxy %>%
-        removeMarker(layerId=as.character(restaurant$CAMIS))
+        removeMarker(layerId=as.character(restaurant$PHONE))
     }
   })
 

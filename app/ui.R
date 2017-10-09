@@ -14,7 +14,7 @@ library(shinyWidgets)
 #"sandstone"
 shinyUI(
   
-  navbarPage("Rent for campus students",theme=shinythemes::shinytheme("cerulean"),fluid=T,
+  navbarPage("Rent for campus students",theme=shinythemes::shinytheme("spacelab"),fluid=T,
             tags$head(includeCSS("styles.css")),
              #####################################1. Home##############################################           
              tabPanel("Home",
