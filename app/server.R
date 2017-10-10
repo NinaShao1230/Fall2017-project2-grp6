@@ -4,6 +4,7 @@ library(data.table)
 #library(choroplethrZip)
 library(devtools)
 library(MASS)
+library(htmltools)
 #library(vcd)
 #library(zipcode)
 library(dplyr)
@@ -28,7 +29,8 @@ load("../output/restaurant.RData")
 load("../output/sub.station.RData")
 load("../output/bus.stop.RData")
 load("../output/housing.RData")  
-
+source("../lib/showPopupHover.R")
+source("../lib/ZillowApi.R")
 shinyServer(function(input, output) {
 
   #Esri.WorldTopoMap
@@ -54,11 +56,11 @@ shinyServer(function(input, output) {
     
     # show data in the map:
     observe({leafletProxy("map")%>%
-    addMarkers(data=housingFilter(),
-               lng=~lng,
-               lat=~lat,
-               clusterOptions=markerClusterOptions(),
-               group="housing_cluster"
+      addMarkers(data=housingFilter(),
+                 lng=~lng,
+                 lat=~lat,
+                 clusterOptions=markerClusterOptions(),
+                 group="housing_cluster"
       )
     })
     # show current status of icons:
@@ -95,25 +97,28 @@ shinyServer(function(input, output) {
       if(showStatus()=="details"){
         if(nrow(marksInBounds())!=0){
           leafletProxy("map")%>%clearGroup(group="new_added")%>% 
-            addLabelOnlyMarkers(data=marksInBounds(),
+            addCircleMarkers(data=marksInBounds(),
                                 lat=~lat,
                                 lng=~lng,
                                 label=~as.character(price),
+                                radius=5,
+                                stroke=FALSE,
+                                fillColor = "green",
+                                fillOpacity=0.7,
                                 group="new_added",
                                 labelOptions = labelOptions(
-                                                noHide = T,
-                                                offset=c(20,-15),
-                                                opacity=0.7,
-                                                style=list(
-                                                  background="green",
-                                                  color="white"  
-                                                  )
-                                                )
+                                  noHide = T,
+                                  offset=c(20,-15),
+                                  opacity=0.7,
+                                  direction="left",
+                                  style=list(
+                                    background="green",
+                                    color="white"  
+                                  )
                                 )
+            )
         }
-        else{
-          leafletProxy("map")%>%clearGroup(group="new_added")
-        }
+     
         
         
                                           
@@ -143,50 +148,107 @@ shinyServer(function(input, output) {
     # sort housing in current zoom level
     
     observe({
-      sortBy=input$sortBy
+      
       housing_filtered=marksInBounds()
       if(nrow(housing_filtered)==0){
-       housing_top10=housing_filtered 
+       housing_sort=housing_filtered 
       }
-      else if(sortBy=="price_low_high"){
-        housing_top10=housing_filtered[order(housing_filtered$price),]
-      }
-      else if(sortBy=="price_high_low"){
-        housing_top10=housing_filtered[order(housing_filtered$price,decreasing = TRUE),]
-      }
+    
+     
+      housing_sort=housing_filtered[order(housing_filtered$price,decreasing = TRUE),]
       
-      else if(sortBy=="bedrooms"){
-        housing_top10=housing_filtered[order(housing_filtered$bedrooms,decreasing = TRUE),]
-      }
-      else if(sortBy=="restrooms"){
-        housing_top10=housing_filtered[order(housing_filtered$bathrooms,decreasing = TRUE),]
-      }
       
-      if(nrow(housing_top10)!=0){
-        show_num=ifelse(nrow(housing_top10)>10,10,nrow(housing_top10))
-        top10info=apply(housing_top10[1:show_num,],1,function(r){
+      
+      
+      if(nrow(housing_sort)!=0){
         
-        paste0("address:",r["addr"],
-               "price:",r["price"],
-               " bedrooms:",r["bedrooms"],
-               " bathrooms:",r["bathrooms"],"\n")  
-         
-         
+        action=apply(housing_sort,1,function(r){
+          addr=r["addr"]
+          lat=r["lat"]
+          lng=r["lng"]
+          paste0("<a class='go-map' href='' data-lat='",lat,"'data-lng='",lng,"'>",addr,'</a>')   
         }
        )
-        output$rank=renderText(paste(top10info,collapse = ""))
+        
+        housing_sort$addr=action
+        output$rank <- renderDataTable(housing_sort[,c("addr","price","bedrooms","bathrooms")],escape=FALSE)
+        
+        
+        
         
       }
       else{
-        output$rank=renderText('')
+        
+        output$rank=renderDataTable(housing_sort[,c("addr","price","bedrooms","bathrooms")])
       }
-      
-     
-      
+    
     })
+        
+    # When point in map is hovered, show a popup with housing info
+    observe({
       
+      event <- input$map_marker_mouseover
+      if (is.null(event))
+        return()
       
- 
+      isolate({
+        showPopupHover(event$lat, event$lng)
+      })
+    })
+    
+    # mouseout the point and cancel popup
+    observe({
+      
+      event <- input$map_marker_mouseout
+      if (is.null(event))
+        return()
+      
+      isolate({
+        leafletProxy("map") %>% clearPopups()
+      })
+    })
+    
+    # click name to go to that point
+    observe({
+      if (is.null(input$goto))
+        return()
+      isolate({
+        map <- leafletProxy("map")
+        
+        
+        
+        lat <- as.numeric(input$goto$lat)
+        lng <- as.numeric(input$goto$lng)
+        
+        map %>% setView(lng = lng, lat = lat, zoom = 16)
+      })
+    })
+    # hover the list to show info
+    observe({
+      if (is.null(input$showPop))
+        return()
+      isolate({
+        map <- leafletProxy("map")
+        map %>% clearPopups()
+        
+        
+        lat <- as.numeric(input$showPop$lat)
+        lng <- as.numeric(input$showPop$lng)
+        showPopupHover(lat, lng)
+        
+      })
+    })
+    
+    # remove popup js
+    observe({
+      if (is.null(input$removePop))
+        return()
+      else{
+        leafletProxy("map")%>% clearPopups()
+      }
+        
+      })
+    
      
    ############Subway##############
     observeEvent(input$Subway,{
