@@ -20,9 +20,9 @@ The **learning goals** for this project is:
 Term: Fall 2017
 
 + Team 6
-+ **New York City Off-Campus Housing **: 
++ **New York City Off-Campus Housing**: 
 + Team members
-	+ team member 1
+	+ 
 	+ team member 2
 	+ team member 3
 	+ team member 4
