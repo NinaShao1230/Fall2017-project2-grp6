@@ -1,0 +1,20 @@
+#container {
+    width: 300px;
+	height: 180px;
+    background-color: white;
+    margin: auto;
+}
+
+
+#first {
+    width: 150px;
+    float: left;
+    height: 150px;
+    
+}
+#second {
+    width: 150px;
+    float: left;
+    height: 150px;
+    
+}
