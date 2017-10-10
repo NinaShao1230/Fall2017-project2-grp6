@@ -22,13 +22,13 @@ Term: Fall 2017
 + Team 6
 + **New York City Off-Campus Housing**: 
 + Team members
-	+ 
-	+ team member 2
-	+ team member 3
-	+ team member 4
-	+ team member 5
+	+ Pinren Chen: pc2751@columbia.edu
+	+ Lin Han: lh2810@columbia.edu
+	+ Sihui Shao: ss5112@columbia.edu
+	+ Chenyun Wu:cw2974@columbia.edu
+	+ Xiaoyu Zhou: xz2599@columbia.edu
 
-+ **Project summary**: In this project, we develop up an app demo to intergrate off-campus housing options and various factors university students may concern about while seeking off-campus housing. App is divided into two main pages: ### and ###. 
++ **Project summary**: In this project, we develop up an app demo to intergrate off-campus housing options and various factors university students may concern about while seeking off-campus housing. App is divided into two main pages: Rental  and ###. 
 
     Housing Seeking tab shows rental house or apartment information in Manhattan area. Users have flexible search choices based on bedroom number, bathroom numbers and budget. Users could find out restaurant, transportation, market and safety condition nearby.
 
