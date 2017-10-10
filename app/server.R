@@ -16,6 +16,13 @@ library(rgdal)
 library(RColorBrewer)
 
 library(XML)
+library(DT)
+library(dplyr)
+#install.packages("tidyr")
+library(tidyr)
+#install.packages("dplyr")
+library(dplyr)
+
 
 #housing<- read.csv("../data/truliaRentPrice/housing_geo.csv",header=TRUE, stringsAsFactors =FALSE)
 #housing<- subset(housing, !is.na(lng))
@@ -32,7 +39,8 @@ load("../output/sub.station.RData")
 load("../output/bus.stop.RData")
 load("../output/housing.RData")  
 load("../output/nyc.RData")
-
+load("../output/rank.Rdata")
+load("../output/rent.Rdata")
 
 color <- list(color1 = c('#F2D7D5','#D98880', '#CD6155', '#C0392B', '#922B21','#641E16'),
              color2 = c('#e6f5ff','#abdcff', '#70c4ff', '#0087e6', '#005998','#00365d','#1B4F72'),
@@ -275,13 +283,61 @@ shinyServer(function(input, output,session) {
 
 
 
-  #######for statistics#####
+  #######for statistics####
+
   
-  output$plot=renderPlot({
-    hist(islands)
+  #draw table 
+  output$ranktable<-renderDataTable({
+    
+    
+    select1<-as.character(input$First)
+    select2<-as.character(input$Second)
+    select3<-as.character(input$Third)
+    
+    #rank calculation 
+    rank<-as.data.frame(rank)
+    rank$score<- 0.5*rank[[select1]]+0.3*rank[[select2]]+0.2*rank[[select3]]
+    order.score<-order(rank$score)
+    rank$TotalRank[order.score] <- 1:nrow(rank)
+    rank$TotalRank
+    
+    #sort table 
+    rank<-rank[order(rank$TotalRank),]
+    rank<-rank%>%
+      select(TotalRank,Neighbourhood,select1,select2,select3,everything())%>%
+      select(-score)
+    
+    rownames(rank)<-rank$Neighbourhood
+    rank$Neighbourhood<-NULL
+    rank
+  })
+  
+    ##########rent plot##############
+  output$rentTrend <- renderPlot({
+    
+    rent<-rent%>%
+    select(-Average.Price)
+    region_rent=gather(rent,RegionName)
+    colnames(region_rent)<-c("regionname","time","rent")
+    region_rent$time<-gsub("X", "", as.character(factor(region_rent$time)) )
+    head(region_rent)
+    region_rent=region_rent%>%
+      arrange(time)%>%
+      group_by(regionname)
+    
+    region.selected <- reactive({region_rent[, input$regionname, drop = FALSE]})
+    region.names <- reactive( {unique(input$regionname)})
+    
+    
+    
+    xrange <- range(region_rent$time)
+    yrange <- c(0,5000)
+    plot(xrange, yrange, type="n", xlab="Year-Month",ylab="Rent Price")
+    for(i in 1:length(region.names())){
+      d <- subset( region_rent, region_rent$regionname == region.names()[i] )
+      lines(d$time, d$rent, col = i)
+    }
   })
   
   
-  
-  
-})
+})#shiney server

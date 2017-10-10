@@ -2,22 +2,37 @@
 #install.packages("shinythemes")
 #install.packages("shinyWidgets")
 #install.packages("htmltools")
+#install.packages("DT")
+
 
 library(shiny)
 library(shinydashboard)
 library(leaflet)
 library(leaflet.extras)
-library("shinythemes")
+library(shinythemes)
 library(shinyWidgets)
+library(DT)
 #library(htmltools)
 #"united"
 #"sandstone"
 shinyUI(
   
-  navbarPage("Rent for campus students",theme=shinythemes::shinytheme("spacelab"),fluid=T,
-            tags$head(includeCSS("styles.css")),
+  #tags$head(includeCSS("styles.css")),
+  
+  navbarPage("Rent for campus students",theme=shinythemes::shinytheme("yeti"),fluid=T,
+           
              #####################################1. Home##############################################           
              tabPanel("Home",
+    
+                      div(class="home",
+                          
+                          
+                          tags$head(
+                            # Include our custom CSS
+                            includeCSS("www/styles.css")
+                          
+                          ),
+                          
                       align="center",
                       br(),
                       br(),
@@ -30,16 +45,16 @@ shinyUI(
                       h3("Find housing around campus" ),
                       br(),
                       h4("Gourp6- Fall 2017"),
-                      br(),
+                      br()
+                  
                       #h4("")
                       
-                      tags$head(
-                        # Include our custom CSS
-                        includeCSS("styles.css")
-                        
+                      # tags$head(
+                      #   # Include our custom CSS
+                      #   includeCSS("styles.css")
+                      #   
+                      # )
                       )
-                      
-                      
              ),
              
   
@@ -100,11 +115,12 @@ shinyUI(
              #        )#sidebar layout
              #     ),#tabpanel
              ##################################2.2map###########################################
+   
              tabPanel("Maps",
                     
                       fluidRow(
                        
-                        column(width=3,style = "height:0px;width:330px;margin-top: 1px;display:inline-block;margin-right: 0px;",
+                        column(width=2,style = "height:0px;width:330px;margin-top: 1px;display:inline-block;margin-right: 0px;",
                                textInput(inputId="location",label="", value="", placeholder = "search your location...")
                                ),
                          column(width=1,style = "margin-top: 25px;display:inline-block;margin-right: 0px;",
@@ -167,17 +183,115 @@ shinyUI(
              
              
                #######################################3. Statistics######################################## 
-             tabPanel("Statistics",
-                      
-                                  tabsetPanel(
-                                  tabPanel("plot1",
-                                           plotOutput('plot')
+             tabPanel("Recommendation",
+                     
+                ###############Table of Rank############### 
+                      fluidRow(
+                        br(),
+                        br(),
+                        
+                        column(2,
+                               
+                               br(),
+                               br(),
+                               br(),
+                               selectInput("university",
+                                           label = "University",
+                                           choices = c("columbia",
+                                                       "nyu",
+                                                       "fordham")),
+                               
+                               br(),
+                        
+                               h4("Set Your Own"),
+                               selectInput("First",
+                                           label = "First Preferance",
+                                           choices = c("Rent",
+                                                       "Safety",
+                                                       "Distance",
+                                                       "Market",
+                                                       "Restaurant"),
+                                           selected="Rent"),
+                               
+                               selectInput("Second",
+                                           label = "Second Preferance",
+                                           choices = c("Rent",
+                                                       "Safety",
+                                                       "Distance",
+                                                       "Market",
+                                                       "Restaurant"),
+                                           selected="Safety"),
+                               
+                               selectInput("Third",
+                                           label = "Third Preferance",
+                                           choices = c("Rent",
+                                                       "Safety",
+                                                       "Distance",
+                                                       "Market",
+                                                       "Restaurant"),
+                                           selected="Distance")
+                        ),
+                        
+                        column(10,
+                               #plotOutput('plot')
+                               DT::dataTableOutput('ranktable')
                                   )
-                                  )#tabset panel
+                        ),#fluidrow 1
+                      
+                      br(),
+                      br(),
+                      br(),
+                      br(),
+                
+                ###############Rent Change################## 
+                      fluidRow(
+                        
+                        column(2,offset=0.8,
+                               checkboxGroupInput("regionname", label = "Rent Change",
+                                                  choices=c(
+                                           "Battery Park",
+                                           "Chelsea",
+                                           "Clinton",
+                                           "East Harlem",
+                                           "East Village",
+                                           "Financial District",
+                                           "Flatiron District",
+                                           "Garment District",
+                                           "Gramercy",
+                                           "Greenwich Village",
+                                           "Harlem",
+                                           "Little Italy",
+                                           "Lower East Side",
+                                           "Midtown",
+                                           "Morningside Heights",
+                                           "Murray Hill",
+                                           "NoHo",
+                                           "Tudor City",
+                                           "Turtle Bay",
+                                           "Upper East Side",
+                                           "Upper West Side",
+                                           "Washington Heights",
+                                           "West Village"),
+                                           selected=c(
+                                             "Upper West Side",
+                                             "Washington Heights"))
+                                
+                          
+                      ),
+                      
+                      column(9,
+                            
+                             plotOutput('rentTrend')
+                                         
+                             )
+                        
+                      )#fluidrow2
+   
 
                       )#tab panel
 )#navbar page
 )#ui
+
 
 
 
