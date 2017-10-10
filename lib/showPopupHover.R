@@ -1,4 +1,4 @@
-showPopupHover <- function(lat, lng) {
+showPopupHover <- function(lat, lng,housing) {
   selected_point <- housing[abs(housing$lat-lat)<0.0001 & abs(housing$lng-lng)<0.0001,]
   lotSize=NULL
   YearBuilt=NULL
@@ -40,7 +40,7 @@ showPopupHover <- function(lat, lng) {
     
   ))
   leafletProxy("map") %>% 
-    addPopups(lng, lat, content,options=popupOptions(autoPan=FALSE,closeButton = FALSE))
+    addPopups(lng, lat, content,options=popupOptions(autoPan=TRUE,closeButton = FALSE))
     
 }
 

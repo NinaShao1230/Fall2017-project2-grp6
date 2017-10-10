@@ -44,7 +44,8 @@ load("../output/rank.Rdata")
 load("../output/rent.Rdata")
 load("../output/region_rent.Rdata")
 load("../output/rank_all.Rdata")
-
+source("../lib/showPopupHover.R")
+source("../lib/ZillowApi.R")
 color <- list(color1 = c('#F2D7D5','#D98880', '#CD6155', '#C0392B', '#922B21','#641E16'),
              color2 = c('#e6f5ff','#abdcff', '#70c4ff', '#0087e6', '#005998','#00365d','#1B4F72'),
              color3 = c("#F7FCF5","#74C476", "#005A32"))
@@ -216,7 +217,7 @@ shinyServer(function(input, output,session) {
       return()
     
     isolate({
-      showPopupHover(event$lat, event$lng)
+      showPopupHover(event$lat, event$lng,housing=housingFilter())
     })
   })
   
@@ -258,7 +259,7 @@ shinyServer(function(input, output,session) {
       
       lat <- as.numeric(input$showPop$lat)
       lng <- as.numeric(input$showPop$lng)
-      showPopupHover(lat, lng)
+      showPopupHover(lat, lng,housingFilter())
       
     })
   })
@@ -267,9 +268,10 @@ shinyServer(function(input, output,session) {
   observe({
     if (is.null(input$removePop))
       return()
-    else{
-      leafletProxy("map")%>% clearPopups()
-    }
+    
+      
+    leafletProxy("map")%>% clearPopups()
+    
     
   })
   
