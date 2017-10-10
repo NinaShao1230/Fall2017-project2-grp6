@@ -22,6 +22,7 @@ library(dplyr)
 library(tidyr)
 #install.packages("dplyr")
 library(dplyr)
+library(ggplot2)
 
 
 #housing<- read.csv("../data/truliaRentPrice/housing_geo.csv",header=TRUE, stringsAsFactors =FALSE)
@@ -41,6 +42,7 @@ load("../output/housing.RData")
 load("../output/nyc.RData")
 load("../output/rank.Rdata")
 load("../output/rent.Rdata")
+load("../output/region_rent.Rdata")
 
 color <- list(color1 = c('#F2D7D5','#D98880', '#CD6155', '#C0392B', '#922B21','#641E16'),
              color2 = c('#e6f5ff','#abdcff', '#70c4ff', '#0087e6', '#005998','#00365d','#1B4F72'),
@@ -338,6 +340,18 @@ shinyServer(function(input, output,session) {
       lines(d$time, d$rent, col = i)
     }
   })
+  
+  output$rentTrendgg <- renderPlot({
+  target <- as.character(input$regionname)
+  
+  new<-filter(region_rent, regionname %in% target)
+  ggplot(data=new,
+         aes(x=year, y=rent, colour=regionname)) +
+    geom_line()
+  })
+  
+  
+  
   
   
 })#shiney server
