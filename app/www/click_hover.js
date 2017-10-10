@@ -24,17 +24,17 @@ $(document).on("mouseover", ".go-map", function(event) {
   Shiny.onInputChange("showPop", {
     lat: lat,
     lng: lng,
-   
+    remove:0
   });
 });
 
 
-$(document).on("mouseleave", ".go-map", function(event) {
+$(document).on("mouseout", ".go-map", function(event) {
   event.preventDefault();
   
   
   
-  Shiny.onInputChange("removePop", {
+  Shiny.onInputChange("showPop", {
 	remove:1
    
   });

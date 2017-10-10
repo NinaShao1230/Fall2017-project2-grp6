@@ -253,27 +253,26 @@ shinyServer(function(input, output,session) {
     if (is.null(input$showPop))
       return()
     isolate({
+      remove=as.numeric(input$showPop$remove)
       map <- leafletProxy("map")
       map %>% clearPopups()
-      
-      
-      lat <- as.numeric(input$showPop$lat)
-      lng <- as.numeric(input$showPop$lng)
-      showPopupHover(lat, lng,housingFilter())
+      if(remove==0){
+        
+        
+        
+        lat <- as.numeric(input$showPop$lat)
+        lng <- as.numeric(input$showPop$lng)
+        showPopupHover(lat, lng,housingFilter())   
+      }
+      else{
+        
+      }
+     
       
     })
   })
   
-  # remove popup js
-  observe({
-    if (is.null(input$removePop))
-      return()
-    
-      
-    leafletProxy("map")%>% clearPopups()
-    
-    
-  })
+  
   
   
   
