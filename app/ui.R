@@ -281,7 +281,7 @@ shinyUI(
                       
                       column(9,
                             
-                             plotOutput('rentTrend')
+                             plotOutput('rentTrendgg')
                                          
                              )
                         
