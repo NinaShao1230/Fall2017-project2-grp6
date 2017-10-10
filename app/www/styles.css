@@ -89,3 +89,25 @@ h1, h2, h3, h4 { font-weight: 400;}
   overflow: hidden;
   padding: 0;
 }
+
+#container {
+    width: 300px;
+	height: 180px;
+    background-color: white;
+    margin: auto;
+}
+
+
+#first {
+    width: 150px;
+    float: left;
+    height: 150px;
+    
+}
+#second {
+    width: 150px;
+    float: left;
+    height: 150px;
+    
+}
+

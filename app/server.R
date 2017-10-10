@@ -59,15 +59,32 @@ shinyServer(function(input, output,session) {
   output$map <- renderLeaflet({
     leaflet() %>%
       addProviderTiles('Esri.WorldTopoMap') %>%
-      setView(lng = -73.971035, lat = 40.775659, zoom = 12) %>%
-      addMarkers(data=housing,
+      setView(lng = -73.971035, lat = 40.775659, zoom = 12)
+ 
+  })
+  
+  
+  
+  #############Housing#############
+
+  
+  # filter housing data:
+  
+  housingFilter=reactive({
+    bedroom_filter=housing$bedrooms>input$min_bedrooms 
+    bathroom_filter=housing$bathrooms>input$min_bathrooms
+    price_filter=housing$price>=input$min_price & housing$price<=input$max_price
+    filter=bedroom_filter & bathroom_filter & price_filter
+    return(housing[filter,])
+  })
+  
+  # show data in the map:
+  observe({leafletProxy("map")%>%
+      addMarkers(data=housingFilter(),
                  lng=~lng,
                  lat=~lat,
                  clusterOptions=markerClusterOptions(),
                  group="housing_cluster"
-                 
-                 
-                 
       )
   })
   # show current status of icons:
@@ -102,15 +119,33 @@ shinyServer(function(input, output,session) {
   
   observe({
     if(showStatus()=="details"){
-      leafletProxy("map")%>%clearGroup(group="new_added")%>% 
-        addLabelOnlyMarkers(data=marksInBounds(),
-                            lat=~lat,
-                            lng=~lng,
-                            label=~as.character(price),
-                            group="new_added",
-                            labelOptions = labelOptions(noHide = T,offset=c(20,-15),opacity=0.7)
-                            
-        )
+      if(nrow(marksInBounds())!=0){
+        leafletProxy("map")%>%clearGroup(group="new_added")%>% 
+          addCircleMarkers(data=marksInBounds(),
+                           lat=~lat,
+                           lng=~lng,
+                           label=~as.character(price),
+                           radius=5,
+                           stroke=FALSE,
+                           fillColor = "green",
+                           fillOpacity=0.7,
+                           group="new_added",
+                           labelOptions = labelOptions(
+                             noHide = T,
+                             offset=c(20,-15),
+                             opacity=0.7,
+                             direction="left",
+                             style=list(
+                               background="green",
+                               color="white"  
+                             )
+                           )
+          )
+      }
+      
+      
+      
+      
       
     }
     
@@ -122,16 +157,124 @@ shinyServer(function(input, output,session) {
   # get the housing data in the bounds
   marksInBounds <- reactive({
     if (is.null(input$map_bounds))
-      return(data[FALSE,])
+      return(housing[FALSE,])
     bounds <- input$map_bounds
     latRng <- range(bounds$north, bounds$south)
     lngRng <- range(bounds$east, bounds$west)
     
-    subset(housing,
-           lat>= latRng[1] & lat <= latRng[2] &
-             lng >= lngRng[1] & lng <= lngRng[2])
+    return(
+      subset(housingFilter(),
+             lat>= latRng[1] & lat <= latRng[2] &
+               lng >= lngRng[1] & lng <= lngRng[2])
+    )
+  })
+  
+  # sort housing in current zoom level
+  
+  observe({
+    
+    housing_filtered=marksInBounds()
+    if(nrow(housing_filtered)==0){
+      housing_sort=housing_filtered 
+    }
+    
+    
+    housing_sort=housing_filtered[order(housing_filtered$price,decreasing = TRUE),]
+    
+    
+    
+    
+    if(nrow(housing_sort)!=0){
+      
+      action=apply(housing_sort,1,function(r){
+        addr=r["addr"]
+        lat=r["lat"]
+        lng=r["lng"]
+        paste0("<a class='go-map' href='' data-lat='",lat,"'data-lng='",lng,"'>",addr,'</a>')   
+      }
+      )
+      
+      housing_sort$addr=action
+      output$rank <- renderDataTable(housing_sort[,c("addr","price","bedrooms","bathrooms")],escape=FALSE)
+      
+      
+      
+      
+    }
+    else{
+      
+      output$rank=renderDataTable(housing_sort[,c("addr","price","bedrooms","bathrooms")])
+    }
     
   })
+  
+  # When point in map is hovered, show a popup with housing info
+  observe({
+    
+    event <- input$map_marker_mouseover
+    if (is.null(event))
+      return()
+    
+    isolate({
+      showPopupHover(event$lat, event$lng)
+    })
+  })
+  
+  # mouseout the point and cancel popup
+  observe({
+    
+    event <- input$map_marker_mouseout
+    if (is.null(event))
+      return()
+    
+    isolate({
+      leafletProxy("map") %>% clearPopups()
+    })
+  })
+  
+  # click name to go to that point
+  observe({
+    if (is.null(input$goto))
+      return()
+    isolate({
+      map <- leafletProxy("map")
+      
+      
+      
+      lat <- as.numeric(input$goto$lat)
+      lng <- as.numeric(input$goto$lng)
+      
+      map %>% setView(lng = lng, lat = lat, zoom = 16)
+    })
+  })
+  # hover the list to show info
+  observe({
+    if (is.null(input$showPop))
+      return()
+    isolate({
+      map <- leafletProxy("map")
+      map %>% clearPopups()
+      
+      
+      lat <- as.numeric(input$showPop$lat)
+      lng <- as.numeric(input$showPop$lng)
+      showPopupHover(lat, lng)
+      
+    })
+  })
+  
+  # remove popup js
+  observe({
+    if (is.null(input$removePop))
+      return()
+    else{
+      leafletProxy("map")%>% clearPopups()
+    }
+    
+  })
+  
+  
+  
   #############Search##############
   # geocodeAdddress <- function(address) {
   #        require(RJSONIO)

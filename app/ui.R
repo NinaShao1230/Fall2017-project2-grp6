@@ -17,7 +17,8 @@ library(DT)
 #"sandstone"
 shinyUI(
   
-  #tags$head(includeCSS("styles.css")),
+  
+  
   
   navbarPage("Rent for campus students",theme=shinythemes::shinytheme("yeti"),fluid=T,
            
@@ -29,7 +30,8 @@ shinyUI(
                           
                           tags$head(
                             # Include our custom CSS
-                            includeCSS("www/styles.css")
+                            includeCSS("www/styles.css"),
+                            includeScript("www/click_hover.js")
                           
                           ),
                           
@@ -142,15 +144,15 @@ shinyUI(
                                )),
                         column(width=1, style="margin-top: 25px;display:inline-block;margin-right: 20px;",
                                dropdownButton(circle = FALSE,
-                                              label = "Bathroom 1+", status = "primary", 
-                                              checkboxGroupInput(inputId="check3", label="choose", choices = c("studio","1b","2b","3b","4b","5b","6b")
+                                              label = "Bedrooms 1+", status = "primary", 
+                                              selectInput(inputId="min_bedrooms", label="choose", choices = c("studio"=0,"1b"=1,"2b"=2,"3b"=3,"4b"=4,"5b"=5,"6b"=6)
                                               ))
                                               ),
                         
                         column(width=1,style = "margin-top: 25px;;display:inline-block;margin-right: 20px;",
                                dropdownButton(circle = FALSE,
                                  label = "Bathroom 1+", status = "primary",
-                                 checkboxGroupInput(inputId="check3", label="choose", choices = c("studio","1b","2b","3b","4b","5b","6b")
+                                 selectInput(inputId="min_bathrooms", label="choose", choices = c("studio"=0,"1b"=1,"2b"=2,"3b"=3,"4b"=4,"5b"=5,"6b"=6)
                                  )
                                )),
                         column(width=1, style = "margin-top: 25px;display:inline-block",
