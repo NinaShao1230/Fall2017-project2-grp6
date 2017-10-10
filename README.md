@@ -28,7 +28,12 @@ Term: Fall 2017
 	+ team member 4
 	+ team member 5
 
-+ **Project summary**: In this project, we develop up an app demo to intergrate off-campus housing options and various factors university students may concern about while seeking off-campus housing. App is divided into two main pages: ### and ###. Housing Seeking tab shows how many house or apartment 
++ **Project summary**: In this project, we develop up an app demo to intergrate off-campus housing options and various factors university students may concern about while seeking off-campus housing. App is divided into two main pages: ### and ###. 
+
+    Housing Seeking tab shows rental house or apartment information in Manhattan area. Users have flexible search choices based on bedroom number, bathroom numbers and budget. Users could find out restaurant, transportation, market and safety condition nearby.
+
+    Recommendation tab offers customed neighborhood recommendation for Columbia, NYU and Fordham University students. We offer five choices which people usually take into consideration while seeking off-campus housing. Users could choose top three preference among average rental price, safety, distance to school, market and restaurant. 
+ 
     We used data from data.gov, New York Open Data and Zillow. Also, we utilizd Zillow API, Google API and Nominatim API during data processing. For data sources detail, please kindly chechk #########.
     
 
