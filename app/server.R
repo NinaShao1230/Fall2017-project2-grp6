@@ -43,6 +43,7 @@ load("../output/nyc.RData")
 load("../output/rank.Rdata")
 load("../output/rent.Rdata")
 load("../output/region_rent.Rdata")
+load("../output/rank_all.Rdata")
 
 color <- list(color1 = c('#F2D7D5','#D98880', '#CD6155', '#C0392B', '#922B21','#641E16'),
              color2 = c('#e6f5ff','#abdcff', '#70c4ff', '#0087e6', '#005998','#00365d','#1B4F72'),
@@ -290,27 +291,38 @@ shinyServer(function(input, output,session) {
   
   #draw table 
   output$ranktable<-renderDataTable({
-    
-    
     select1<-as.character(input$First)
     select2<-as.character(input$Second)
     select3<-as.character(input$Third)
+    school<-as.character(input$university)
+    
+    rank<-rank_all[,1:5]
+    if(school == "columbia"){
+      rank$Distance<-rank_all$Travel_Columbia
+    }
+    if(school == "nyu"){
+      rank$Distance<-rank_all$Travel_NYU
+    }
+    if(school == "fordham"){
+      rank$Distance<-rank_all$Travel_Fordham
+    }
     
     #rank calculation 
     rank<-as.data.frame(rank)
     rank$score<- 0.5*rank[[select1]]+0.3*rank[[select2]]+0.2*rank[[select3]]
     order.score<-order(rank$score)
     rank$TotalRank[order.score] <- 1:nrow(rank)
-    rank$TotalRank
     
     #sort table 
     rank<-rank[order(rank$TotalRank),]
-    rank<-rank%>%
-      select(TotalRank,Neighbourhood,select1,select2,select3,everything())%>%
-      select(-score)
     
-    rownames(rank)<-rank$Neighbourhood
-    rank$Neighbourhood<-NULL
+    rank<-rank %>%
+      dplyr::select(neighbourhood,TotalRank,select1,select2,select3,everything()) %>%
+      dplyr::select(-score)
+    
+    rownames(rank)<-rank$neighbourhood
+    rank$neighbourhood<-NULL
+    
     rank
   })
   
