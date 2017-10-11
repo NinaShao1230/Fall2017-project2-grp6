@@ -8,7 +8,7 @@ Following are data sources for the projects:
 + Restaurant:NYC Open Data: DOHMH New York City Restaurant Inspection Results (https://data.cityofnewyork.us/Health/DOHMH-New-York-City-Restaurant-Inspection-Results/xx67-kt59)
 + Markets: Data.gov: States of New York, Retail Food Market (https://catalog.data.gov/dataset/retail-food-stores)
 
-+ **API**:
+**API**:
 + nominatim.openstreetmap.org: neighborhood Mapping
 + Google API: zip code mapping and traveling time calculation 
 + Zillow API: deep search housing information like images, lotsize, apprentices and year built. 
