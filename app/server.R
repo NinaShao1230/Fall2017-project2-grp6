@@ -506,7 +506,7 @@ shinyServer(function(input, output,session) {
          aes(x=year, y=rent, colour=regionname)) +
     geom_line()+
     scale_x_continuous(breaks = round(seq(min(new$year), max(new$year), by = 1),1)) +
-    ylim(0,500)
+    ylim(0,5000)
     
   })
   
