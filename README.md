@@ -2,7 +2,11 @@
 
 ### [Project Description](doc/project2_desc.md)
 
-![screenshot](https://github.com/TZstatsADS/Fall2017-project2-grp6/tree/master/doc/1.png)
+![screenshot](doc/1.png)
+
+![screenshot](doc/2.png)
+
+![screenshot](doc/3.png)
 
 
 ## Manhattan Off-Campus Housing
