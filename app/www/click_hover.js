@@ -25,6 +25,10 @@ $(document).on("mouseover", ".go-map", function(event) {
     lat: lat,
     lng: lng,
     remove:0
+<<<<<<< Updated upstream
+=======
+   
+>>>>>>> Stashed changes
   });
 });
 
