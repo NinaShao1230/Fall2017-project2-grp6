@@ -20,14 +20,20 @@ shinyUI(
   
   
   
+<<<<<<< Updated upstream
   navbarPage("Manhattan Off-Campus Housing",theme=shinythemes::shinytheme("spacelab"),fluid=T,
+=======
+  navbarPage("Manhattan Off-Campus Housing",
+             #theme=shinythemes::shinytheme("spacelab"),
+             fluid=T,
+>>>>>>> Stashed changes
            
              #####################################1. Home##############################################           
              tabPanel("Home",icon=icon("home"),
     
                       div(class="home",
                           
-                          
+    
                           tags$head(
                             # Include our custom CSS
                             includeCSS("www/styles.css"),
@@ -42,11 +48,27 @@ shinyUI(
                       br(),
                       br(),
                       
+<<<<<<< Updated upstream
                       #h5("Find Your Off-Campus Housing in Manhattan" ),
                       br(),
                       h3("Find Your Off-Campus Housing in Manhattan",style="color:white;font-family: Times New Roman;font-size: 300%;font-weight: bold;"),
                       br(),
                       h4("Group6 - Fall 2017"style="color:white;font-family: Times New Roman;font-size: 200%;font-weight: bold;"),
+=======
+                      #h5("Find housing around campus",),
+                      br(),
+                      br(),
+                      br(),
+                      br(),
+                      br(),
+                      br(),
+                      br(),
+                      h1("Find Your Off-Campus Housing in Manhattan",style="color:white;font-family: Times New Roman;font-size: 300%;font-weight: bold;"),
+                      br(),
+                      br(),
+                      br(),
+                      h3("Gourp6- Fall 2017",style="color:white;font-family: Times New Roman;font-size: 200%;font-weight: bold;"),
+>>>>>>> Stashed changes
                       br()
                   
                       #h4("")
@@ -118,10 +140,15 @@ shinyUI(
              #     ),#tabpanel
              ##################################2.2map###########################################
    
+<<<<<<< Updated upstream
              tabPanel("Housing Explorer",icon = icon("map"),
+=======
+             tabPanel("Maps", icon = icon("map"),
+>>>>>>> Stashed changes
                     
  fluidRow(
                        
+<<<<<<< Updated upstream
                         column(width=1,
                                style = "width:330px;display:inline-block;margin-right: 0px;margin-bottom:0px;margin-top:0px;padding-right:0px;",
                                textInput(inputId="location",label="", value="", placeholder = "search your location...")
@@ -131,12 +158,28 @@ shinyUI(
                                 actionButton("button1",label="", icon = icon("search"))
                                              #,style="padding:12px; font-size:100%;color: #fff; background-color: #337ab7; border-color: #2e6da4")
                          ),
+=======
+                        tags$div(id="searchBar",
+                                 column(width=1,
+                                        style = "width:270px;display:inline-block;margin-right: 0px;margin-bottom:0px;margin-top:0px;padding-right:0px",
+                                        textInput(inputId="location",label="", value="", placeholder = "search your location...")
+                                 ),
+                                 column(width=1,
+                                        style = "margin-top: 25px;display:inline-block;margin-right: 0px;margin-left: 0px;left:0px;bottom:5px;padding-left:0px",
+                                        actionButton("button1",label="", icon = icon("search"))
+                                        #,style="padding:12px; font-size:100%;color: #fff; background-color: #337ab7; border-color: #2e6da4")
+                                 )),
+>>>>>>> Stashed changes
                         # column(width=1,style = "margin-top: 25px;display:inline-block;margin-right: 0px;",
                         #        actionButton("button2",label="Clear search")
                         #                     #, style="padding:10px; font-size:80%;color: #fff; background-color: #f29898")
                         # ),
                         column(width=1,
+<<<<<<< Updated upstream
                                style = "margin-top: 25px;display:inline-block;margin-right: 0px;",
+=======
+                               style = "margin-top: 25px;display:inline-block;margin-right: 0px;margin-left: 120px",
+>>>>>>> Stashed changes
                                dropdownButton(circle = FALSE,
                                               label="Min price",  status = "default",
                                               numericInput(inputId="min_price", label = "choose",value=0, min=0,max=1000000,step=1000)
@@ -190,6 +233,7 @@ shinyUI(
                       # # checkboxInput("Restaurant", label = "Restaurant",value= FALSE),
                       # checkboxInput("filters",label = "filters",value = FALSE,width=NULL),
                       mainPanel(
+<<<<<<< Updated upstream
                                                 
                     fluidRow(
                           
@@ -220,10 +264,45 @@ shinyUI(
                                )#row
                       )#main panel
                       ),#tab panel
+=======
+                        
+                        fluidRow(
+                          
+                          column(7, 
+                                 br(),
+                                 br(),
+                                 # h3("current rank"),
+                                 dataTableOutput("rank")
+                                 
+                          ),
+                          
+                          column(5,
+                                 leafletOutput("map", width = "220%", height = 650),
+                                 
+                                 absolutePanel(id="legend",
+                                               fixed = TRUE,
+                                               draggable = TRUE, top = 200, left = "auto", right = 200, bottom = "auto",
+                                               width = 125, height = 215,
+                                               
+                                               h5("Select Features"),
+                                               checkboxInput("Crime", label = "Crime",value= FALSE),
+                                               checkboxInput("Bus", label = "Bus",value= FALSE),
+                                               checkboxInput("Subway",label="Subway",value = FALSE),
+                                               checkboxInput("Market", label = "Market",value = FALSE),
+                                               checkboxInput("Restaurant", label = "Restaurant",value= FALSE)                                 
+                                               
+                                 )#abs panel
+                                 
+                          )#column
+                        )#row
+                      )#main panel
+             ),#tab panel
+               
+>>>>>>> Stashed changes
              
              
                #######################################3. Statistics######################################## 
-             tabPanel("Recommendation",
+             tabPanel("Recommendation",icon=icon("thumbs-up"),
                      
                 ###############Table of Rank############### 
                       fluidRow(

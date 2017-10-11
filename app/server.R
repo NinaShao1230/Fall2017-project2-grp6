@@ -47,9 +47,9 @@ load("../output/rank_all.Rdata")
 source("../lib/showPopupHover.R")
 source("../lib/ZillowApi.R")
 color <- list(color1 = c('#F2D7D5','#D98880', '#CD6155', '#C0392B', '#922B21','#641E16'),
-             color2 = c('#e6f5ff','#abdcff', '#70c4ff', '#0087e6', '#005998','#00365d','#1B4F72'),
-             color3 = c("#F7FCF5","#74C476", "#005A32"))
-bin <- list(bin1 = c(0,100,1000,10000,100000,1000000,10000000), bin2 = c(0,1,2,3,4,5,6,7))
+              color2 = c('#e6f5ff','#abdcff', '#70c4ff', '#0087e6', '#005998','#00365d','#1B4F72'),
+              color3 = c("#F7FCF5","#74C476", "#005A32"))
+bin <- list(bin1 = c(0,500,1000,1500,2000,2500,3000), bin2 = c(0,1,2,3,4,5,6,7))
 pal <- colorBin(color[[1]], bins = bin[[1]])
 
 
@@ -72,7 +72,7 @@ shinyServer(function(input, output,session) {
   
   
   #############Housing#############
-
+  
   
   # filter housing data:
   
@@ -85,7 +85,7 @@ shinyServer(function(input, output,session) {
   })
   
   # show data in the map:
-  observe({leafletProxy("map")%>%
+  observe({leafletProxy("map")%>%clearGroup("housing_cluster")%>%
       addMarkers(data=housingFilter(),
                  lng=~lng,
                  lat=~lat,
@@ -179,16 +179,7 @@ shinyServer(function(input, output,session) {
   
   observe({
     
-    housing_filtered=marksInBounds()
-    if(nrow(housing_filtered)==0){
-      housing_sort=housing_filtered 
-    }
-    
-    
-    housing_sort=housing_filtered[order(housing_filtered$price,decreasing = TRUE),]
-    
-    
-    
+    housing_sort=marksInBounds()
     
     if(nrow(housing_sort)!=0){
       
@@ -220,10 +211,12 @@ shinyServer(function(input, output,session) {
     event <- input$map_marker_mouseover
     if (is.null(event))
       return()
+    if(showStatus()=="details"){
+      isolate({
+        showPopupHover(event$lat, event$lng,housing=housingFilter())
+      })  
+    }
     
-    isolate({
-      showPopupHover(event$lat, event$lng,housing=housingFilter())
-    })
   })
   
   # mouseout the point and cancel popup
@@ -260,7 +253,11 @@ shinyServer(function(input, output,session) {
     isolate({
       remove=as.numeric(input$showPop$remove)
       map <- leafletProxy("map")
+<<<<<<< Updated upstream
       map %>% clearPopups()
+=======
+      
+>>>>>>> Stashed changes
       if(remove==0){
         
         
@@ -270,9 +267,15 @@ shinyServer(function(input, output,session) {
         showPopupHover(lat, lng,housingFilter())   
       }
       else{
+<<<<<<< Updated upstream
         
       }
      
+=======
+        map %>% clearPopups()
+      }
+      
+>>>>>>> Stashed changes
       
     })
   })
@@ -316,7 +319,7 @@ shinyServer(function(input, output,session) {
       addMarkers(lng=long,lat=lati,layerId = "1",icon=icons(
         iconUrl = "../output/icons8-Location-50.png",iconWidth = 25, iconHeight = 25))
   })
-  #################Clear Search############
+  #################Clear Choices############
   observeEvent(input$button2,{
     proxy<-leafletProxy("map")
     proxy %>%
@@ -362,8 +365,9 @@ shinyServer(function(input, output,session) {
   #   }
   # 
   # })
-
+  
   #############Clear button###########
+<<<<<<< Updated upstream
   #observeEvent(input$clear, {
   #  leafletProxy('map')%>% setView(lng = -73.971035, lat = 40.775659, zoom = 12)
 
@@ -433,8 +437,105 @@ shinyServer(function(input, output,session) {
     
 
 
+=======
+  observeEvent(input$clear, {
+    leafletProxy('map')%>% setView(lng = -73.971035, lat = 40.775659, zoom = 12)
+    
+  })
+ 
+  
+  ############Subway##############
+  observeEvent(input$Subway,{
+    p<-input$Subway
+    proxy<-leafletProxy("map")
+    
+    if(p==TRUE){
+      proxy %>% 
+        addMarkers(data=sub.station, ~lng, ~lat,label = ~info,icon=icons(
+          iconUrl = "../output/icons8-Bus-48.png",
+          iconWidth = 7, iconHeight = 7),group="subway")
+    }
+    else proxy%>%clearGroup(group="subway")
+    
+  })
+  
+  ###############bus###############
+  observeEvent(input$Bus,{
+    p<-input$Bus
+    proxy<-leafletProxy("map")
+    
+    if(p==TRUE){
+      proxy %>% 
+        addMarkers(data=bus.stop, ~lng, ~lat,label = ~info,icon=icons(
+          iconUrl = "../output/icons8-Bus-48.png",
+          iconWidth = 7, iconHeight = 7),layerId=as.character(bus.stop$info))
+    }
+    else proxy%>%removeMarker(layerId=as.character(bus.stop$info))
+    
+  })
+  
+  
+  ##############Market#####################
+  observeEvent(input$Market,{
+    p<- input$Market
+    proxy<-leafletProxy("map")
+    if(p==TRUE){
+      proxy%>%
+        addMarkers(lat=markets$latitude, lng=markets$longitude,icon=icons(
+          iconUrl = "../output/icons8-Shopping Cart-48.png",
+          iconWidth = 7, iconHeight = 7, shadowWidth = 7, shadowHeight = 7),layerId=as.character(markets$License.Number))
+    }
+    else{
+      proxy %>%
+        removeMarker(layerId=as.character(markets$License.Number))
+    }
+  })
+  
+  ##############Resturant#####################
+  observeEvent(input$Restaurant,{
+    p<- input$Restaurant
+    proxy<-leafletProxy("map")
+    if(p==TRUE){
+      proxy%>%
+        addMarkers(lat=restaurant$lat, lng=restaurant$lon,icon=icons(
+          iconUrl = "../output/icons8-French Fries-96.png",
+          iconWidth = 7, iconHeight = 7, shadowWidth = 7, shadowHeight = 7),layerId=as.character(restaurant$CAMIS))
+    }
+    else{
+      proxy %>%
+        removeMarker(layerId=as.character(restaurant$CAMIS))
+    }
+  })
+  ##############Crime#####################
+  observeEvent(input$Crime,{
+    p<- input$Crime
+    proxy<-leafletProxy("map")
+    if(p==TRUE){
+      proxy %>%
+        addPolygons(data=nyc, fillColor = ~pal(count), color = 'grey', weight = 1,
+                    fillOpacity = .6)%>%
+        addLegend(pal = pal, values = nyc$count,position="bottomleft")
+    }
+    else proxy%>%clearShapes()%>%clearControls()
+    
+  })
+  # observeEvent("Crime"%in% input$filters,{
+  #   proxy<-leafletProxy("map")
+  #   
+  #   if("Crime"%in% input$filters){
+  #     proxy %>%
+  #       addPolygons(data=nyc, fillColor = ~pal(count), color = 'grey', weight = 1,
+  #                   fillOpacity = .6)%>%
+  #       addLegend(pal = pal, values = nyc$count)
+  #   }
+  #   else proxy%>%clearShapes()
+  #   
+  # })
+  
+  
+>>>>>>> Stashed changes
   #######for statistics####
-
+  
   
   #draw table 
   output$ranktable<-renderDataTable({
@@ -473,11 +574,11 @@ shinyServer(function(input, output,session) {
     rank
   })
   
-    ##########rent plot##############
+  ##########rent plot##############
   output$rentTrend <- renderPlot({
     
     rent<-rent%>%
-    select(-Average.Price)
+      select(-Average.Price)
     region_rent=gather(rent,RegionName)
     colnames(region_rent)<-c("regionname","time","rent")
     region_rent$time<-gsub("X", "", as.character(factor(region_rent$time)) )
@@ -501,6 +602,7 @@ shinyServer(function(input, output,session) {
   })
   
   output$rentTrendgg <- renderPlot({
+<<<<<<< Updated upstream
   target <- as.character(input$regionname)
   
   new<-filter(region_rent, regionname %in% target)
@@ -510,6 +612,16 @@ shinyServer(function(input, output,session) {
     scale_x_continuous(breaks = round(seq(min(new$year), max(new$year), by = 1),1)) +
     ylim(0,5000)
     
+=======
+    target <- as.character(input$regionname)
+    
+    new<-filter(region_rent, regionname %in% target)
+    ggplot(data=new,
+           aes(x=year, y=rent, colour=regionname)) +
+      geom_line()+
+      scale_x_continuous(breaks = round(seq(min(new$year), max(new$year), by = 1),1)) +
+      ylim(0,5000)
+>>>>>>> Stashed changes
   })
   
   
