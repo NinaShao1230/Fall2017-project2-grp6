@@ -442,15 +442,15 @@ shinyServer(function(input, output,session) {
     school<-as.character(input$university)
     
     rank<-rank_all[,1:5]
-    if(school == "columbia"){
+    if(school == "Columbia University"){
       rank$Distance<-rank_all$Travel_Columbia
     }
-    if(school == "nyu"){
+    if(school == "New York University"){
       rank$Distance<-rank_all$Travel_NYU
     }
-    if(school == "fordham"){
+    if(school == "Fordham University"){
       rank$Distance<-rank_all$Travel_Fordham
-    }
+    }p
     
     #rank calculation 
     rank<-as.data.frame(rank)
