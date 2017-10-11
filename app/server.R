@@ -441,15 +441,15 @@ shinyServer(function(input, output,session) {
     school<-as.character(input$university)
     
     rank<-rank_all[,1:5]
-    if(school == "columbia"){
+    if(school == "Columbia University"){
       rank$Distance<-rank_all$Travel_Columbia
     }
-    if(school == "nyu"){
+    if(school == "New York University"){
       rank$Distance<-rank_all$Travel_NYU
     }
-    if(school == "fordham"){
+    if(school == "Fordham University"){
       rank$Distance<-rank_all$Travel_Fordham
-    }
+    }p
     
     #rank calculation 
     rank<-as.data.frame(rank)
@@ -503,7 +503,10 @@ shinyServer(function(input, output,session) {
   new<-filter(region_rent, regionname %in% target)
   ggplot(data=new,
          aes(x=year, y=rent, colour=regionname)) +
-    geom_line()
+    geom_line()+
+    scale_x_continuous(breaks = round(seq(min(new$year), max(new$year), by = 1),1)) +
+    ylim(0,5000)
+    
   })
   
   

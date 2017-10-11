@@ -20,7 +20,7 @@ shinyUI(
   
   
   
-  navbarPage("Rent for campus students",theme=shinythemes::shinytheme("yeti"),fluid=T,
+  navbarPage("Manhattan Off-Campus Housing",theme=shinythemes::shinytheme("yeti"),fluid=T,
            
              #####################################1. Home##############################################           
              tabPanel("Home",
@@ -42,11 +42,11 @@ shinyUI(
                       br(),
                       br(),
                       
-                      #h5("Find housing around campus" ),
+                      #h5("Find Your Off-Campus Housing in Manhattan" ),
                       br(),
-                      h3("Find housing around campus" ),
+                      h3("Find Your Off-Campus Housing in Manhattan" ),
                       br(),
-                      h4("Gourp6- Fall 2017"),
+                      h4("Group6 - Fall 2017"),
                       br()
                   
                       #h4("")
@@ -118,7 +118,7 @@ shinyUI(
              #     ),#tabpanel
              ##################################2.2map###########################################
    
-             tabPanel("Maps",
+             tabPanel("Housing Explorer",
                     
                       fluidRow(
                        
@@ -174,25 +174,37 @@ shinyUI(
                       # # checkboxInput("Market", label = "Market",value = FALSE),
                       # # checkboxInput("Restaurant", label = "Restaurant",value= FALSE),
                       # checkboxInput("filters",label = "filters",value = FALSE,width=NULL),
-                      mainPanel(fluidRow(
-                        column(width=2,absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
-                                             draggable = TRUE, top = "auto", left = "20", right = "auto", bottom = 60,
-                                             width = 300, height = "auto",
+                      mainPanel(
+                                                
+                    fluidRow(
+                          
+                        column(5, 
+                               h5("current rank"),
+                               dataTableOutput("rank")
                                              
-                                             h5("current rank"),
-                                             dataTableOutput("rank")
-                                             
-                        )),
-                        column(width=10,leafletOutput("map", width = "150%", height = 650))
+                        ),
                         
-                      )
-                      )
-                                
-                        
-                      
-                      
-                      ),
-               
+                        column(7,
+                               leafletOutput("map", width = "180%", height = 650),
+                               
+                               absolutePanel(id="legend",
+                                          fixed = TRUE,
+                                          draggable = TRUE, top = 200, left = "auto", right = 200, bottom = "auto",
+                                          width = 125, height = 215,
+                                          
+                                          h5("Select Features"),
+                                          checkboxInput("Crime", label = "Crime",value= FALSE),
+                                          checkboxInput("Bus", label = "Bus",value= FALSE),
+                                          checkboxInput("Subway",label="Subway",value = FALSE),
+                                          checkboxInput("Market", label = "Market",value = FALSE),
+                                          checkboxInput("Restaurant", label = "Restaurant",value= FALSE)                                 
+                                          
+                                        )#abs panel
+                                    
+                               )#column
+                               )#row
+                      )#main panel
+                      ),#tab panel
              
              
                #######################################3. Statistics######################################## 
@@ -201,22 +213,22 @@ shinyUI(
                 ###############Table of Rank############### 
                       fluidRow(
                         br(),
+                         h4("Neighbourhood Recommendation"),
                         br(),
+                        
                         
                         column(2,
                                
                                br(),
                                br(),
                                br(),
+                               
+                               h4("What You Care:"),
                                selectInput("university",
                                            label = "University",
-                                           choices = c("columbia",
-                                                       "nyu",
-                                                       "fordham")),
-                               
-                               br(),
-                        
-                               h4("Set Your Own"),
+                                           choices = c("Columbia University",
+                                                       "New York University",
+                                                       "Fordham University")),
                                selectInput("First",
                                            label = "First Preferance",
                                            choices = c("Rent",
@@ -258,9 +270,11 @@ shinyUI(
                 
                 ###############Rent Change################## 
                       fluidRow(
-                        
+                        h4("Neighbourhood Rent Price Over Years"),
+                        br(),
                         column(2,offset=0.8,
-                               checkboxGroupInput("regionname", label = "Rent Change",
+                               h4("Choose Neighbourhoods:"),
+                               checkboxGroupInput("regionname", label = "Neighbourhood",
                                                   choices=c(
                                            "Battery Park",
                                            "Chelsea",
@@ -294,7 +308,7 @@ shinyUI(
                       
                       column(9,
                             
-                             plotOutput('rentTrendgg')
+                             plotOutput('rentTrendgg',height =   "600px",width = "110%")
                                          
                              )
                         

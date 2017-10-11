@@ -19,15 +19,23 @@ The **learning goals** for this project is:
 ## Project Title Lorem ipsum dolor sit amet
 Term: Fall 2017
 
-+ Team #
-+ **Projec title**: + Team members
-	+ team member 1
-	+ team member 2
-	+ team member 3
-	+ team member 4
-	+ team member 5
++ Team 6
++ **New York City Off-Campus Housing**: 
++ Team members
+	+ Pinren Chen: pc2751@columbia.edu
+	+ Lin Han: lh2810@columbia.edu
+	+ Sihui Shao: ss5112@columbia.edu
+	+ Chenyun Wu:cw2974@columbia.edu
+	+ Xiaoyu Zhou: xz2599@columbia.edu
 
-+ **Project summary**: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
++ **Project summary**: In this project, we develop up an app demo to intergrate off-campus housing options and various factors university students may concern about while seeking off-campus housing. App is divided into two main pages: Rental  and ###. 
+
+    Housing Seeking tab shows rental house or apartment information in Manhattan area. Users have flexible search choices based on bedroom number, bathroom numbers and budget. Users could find out restaurant, transportation, market and safety condition nearby.
+
+    Recommendation tab offers customed neighborhood recommendation for Columbia, NYU and Fordham University students. We offer five choices which people usually take into consideration while seeking off-campus housing. Users could choose top three preference among average rental price, safety, distance to school, market and restaurant. 
+ 
+    We used data from data.gov, New York Open Data and Zillow. Also, we utilizd Zillow API, Google API and Nominatim API during data processing. For data sources detail, please kindly chechk #########.
+    
 
 + **Contribution statement**: ([default](doc/a_note_on_contributions.md)) All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
 
