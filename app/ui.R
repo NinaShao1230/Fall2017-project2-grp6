@@ -20,7 +20,7 @@ shinyUI(
   
   
   
-  navbarPage("Rent for campus students",theme=shinythemes::shinytheme("yeti"),fluid=T,
+  navbarPage("Manhattan Off-Campus Housing",theme=shinythemes::shinytheme("yeti"),fluid=T,
            
              #####################################1. Home##############################################           
              tabPanel("Home",
@@ -42,11 +42,11 @@ shinyUI(
                       br(),
                       br(),
                       
-                      #h5("Find housing around campus" ),
+                      #h5("Find Your Off-Campus Housing in Manhattan" ),
                       br(),
-                      h3("Find housing around campus" ),
+                      h3("Find Your Off-Campus Housing in Manhattan" ),
                       br(),
-                      h4("Gourp6- Fall 2017"),
+                      h4("Group6 - Fall 2017"),
                       br()
                   
                       #h4("")
@@ -118,7 +118,7 @@ shinyUI(
              #     ),#tabpanel
              ##################################2.2map###########################################
    
-             tabPanel("Maps",
+             tabPanel("Housing Explorer",
                     
                       fluidRow(
                        
@@ -201,22 +201,22 @@ shinyUI(
                 ###############Table of Rank############### 
                       fluidRow(
                         br(),
+                         h4("Neighbourhood Recommendation"),
                         br(),
+                        
                         
                         column(2,
                                
                                br(),
                                br(),
                                br(),
+                               
+                               h4("What You Care:"),
                                selectInput("university",
                                            label = "University",
-                                           choices = c("columbia",
-                                                       "nyu",
-                                                       "fordham")),
-                               
-                               br(),
-                        
-                               h4("Set Your Own"),
+                                           choices = c("Columbia University",
+                                                       "New York University",
+                                                       "Fordham University")),
                                selectInput("First",
                                            label = "First Preferance",
                                            choices = c("Rent",
@@ -258,9 +258,11 @@ shinyUI(
                 
                 ###############Rent Change################## 
                       fluidRow(
-                        
+                        h4("Neighbourhood Rent Price Over Years"),
+                        br(),
                         column(2,offset=0.8,
-                               checkboxGroupInput("regionname", label = "Rent Change",
+                               h4("Choose Neighbourhoods:"),
+                               checkboxGroupInput("regionname", label = "Neighbourhood",
                                                   choices=c(
                                            "Battery Park",
                                            "Chelsea",
