@@ -1,20 +1,4 @@
-#install.packages('leaflet.extras')
-#install.packages("shinythemes")
-#install.packages("shinyWidgets")
-#install.packages("htmltools")
-#install.packages("DT")
-
-
-library(shiny)
-library(shinydashboard)
-library(leaflet)
-library(leaflet.extras)
-library(shinythemes)
-library(shinyWidgets)
-library(DT)
-#library(htmltools)
-#"united"
-#"sandstone"
+source("../lib/Packages.R")
 shinyUI(
   
   
