@@ -25,11 +25,12 @@ $(document).on("mouseover", ".go-map", function(event) {
     lat: lat,
     lng: lng,
     remove:0
+   
   });
 });
 
 
-$(document).on("mouseout", ".go-map", function(event) {
+$(document).on("mouseleave", ".go-map", function(event) {
   event.preventDefault();
   
   
