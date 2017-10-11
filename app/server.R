@@ -376,7 +376,7 @@ shinyServer(function(input, output,session) {
       if(p==TRUE){
           proxy %>% 
           addMarkers(data=sub.station, ~lng, ~lat,label = ~info,icon=icons(
-            iconUrl = "../output/metro.png",
+            iconUrl = "../output/icons8-Bus-48.png",
             iconWidth = 7, iconHeight = 7),group="subway")
         }
       else proxy%>%clearGroup(group="subway")
