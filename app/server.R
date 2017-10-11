@@ -149,6 +149,10 @@ shinyServer(function(input, output,session) {
           )
       }
       
+      else{
+        leafletProxy("map")%>%clearGroup(group="new_added")
+      }
+      
       
       
       
