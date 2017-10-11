@@ -60,8 +60,13 @@ shinyServer(function(input, output,session) {
   output$map <- renderLeaflet({
     leaflet() %>%
       addProviderTiles('Esri.WorldTopoMap') %>%
-      setView(lng = -73.971035, lat = 40.775659, zoom = 12)
- 
+      setView(lng = -73.971035, lat = 40.775659, zoom = 12) %>%
+      addMarkers(data=housing,
+               lng=~lng,
+               lat=~lat,
+               clusterOptions=markerClusterOptions(),
+               group="housing_cluster"
+    )
   })
   
   
@@ -316,10 +321,15 @@ shinyServer(function(input, output,session) {
     proxy<-leafletProxy("map")
     proxy %>%
       setView(lng = -73.971035, lat = 40.775659, zoom = 12) %>%
-      removeMarker(layerId="1")
+      removeMarker(layerId="1") %>%
+      addMarkers(data=housing,
+                 lng=~lng,
+                 lat=~lat,
+                 clusterOptions=markerClusterOptions(),
+                 group="housing_cluster")
     updateTextInput(session, inputId="location", value = "")
   }
-    
+  
   )
   ##################ALL FILTERS############
   # observeEvent(input$filters,{
@@ -354,10 +364,10 @@ shinyServer(function(input, output,session) {
   # })
 
   #############Clear button###########
-  observeEvent(input$clear, {
-    leafletProxy('map')%>% setView(lng = -73.971035, lat = 40.775659, zoom = 12)
+  #observeEvent(input$clear, {
+  #  leafletProxy('map')%>% setView(lng = -73.971035, lat = 40.775659, zoom = 12)
 
-  })
+  #})
  ############Subway##############
     observeEvent(input$Subway,{
       p<-input$Subway
