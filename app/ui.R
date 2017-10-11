@@ -20,7 +20,7 @@ shinyUI(
   
   
   
-  navbarPage("Manhattan Off-Campus Housing",theme=shinythemes::shinytheme("yeti"),fluid=T,
+  navbarPage("Manhattan Off-Campus Housing",theme=shinythemes::shinytheme("spacelab"),fluid=T,
            
              #####################################1. Home##############################################           
              tabPanel("Home",icon=icon("home"),
