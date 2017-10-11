@@ -1,4 +1,29 @@
-source("../lib/Packages.R")
+library(shiny)
+library(leaflet)
+library(data.table)
+#library(choroplethrZip)
+library(devtools)
+library(MASS)
+#library(vcd)
+#library(zipcode)
+library(dplyr)
+library(tigris)
+library(sp)
+library(maptools)
+library(broom)
+library(httr)
+library(rgdal)
+library(RColorBrewer)
+
+library(XML)
+library(DT)
+library(dplyr)
+#install.packages("tidyr")
+library(tidyr)
+#install.packages("dplyr")
+library(dplyr)
+library(ggplot2)
+
 
 #housing<- read.csv("../data/truliaRentPrice/housing_geo.csv",header=TRUE, stringsAsFactors =FALSE)
 #housing<- subset(housing, !is.na(lng))
@@ -35,8 +60,13 @@ shinyServer(function(input, output,session) {
   output$map <- renderLeaflet({
     leaflet() %>%
       addProviderTiles('Esri.WorldTopoMap') %>%
-      setView(lng = -73.971035, lat = 40.775659, zoom = 12)
- 
+      setView(lng = -73.971035, lat = 40.775659, zoom = 12) %>%
+      addMarkers(data=housing,
+               lng=~lng,
+               lat=~lat,
+               clusterOptions=markerClusterOptions(),
+               group="housing_cluster"
+    )
   })
   
   
@@ -207,18 +237,13 @@ shinyServer(function(input, output,session) {
       return()
     isolate({
       map <- leafletProxy("map")
-      remove<-as.numeric(input$goto$remove)
       
-      if(remove==1){
-        lat <- as.numeric(input$goto$lat)
-        lng <- as.numeric(input$goto$lng)
-        
-        map %>% setView(lng = lng, lat = lat, zoom = 16)  
-      }
       
-      if(remove==0){
-        map %>% clearPopups() 
-      }
+      
+      lat <- as.numeric(input$goto$lat)
+      lng <- as.numeric(input$goto$lng)
+      
+      map %>% setView(lng = lng, lat = lat, zoom = 16)
     })
   })
   # hover the list to show info
@@ -289,10 +314,15 @@ shinyServer(function(input, output,session) {
     proxy<-leafletProxy("map")
     proxy %>%
       setView(lng = -73.971035, lat = 40.775659, zoom = 12) %>%
-      removeMarker(layerId="1")
+      removeMarker(layerId="1") %>%
+      addMarkers(data=housing,
+                 lng=~lng,
+                 lat=~lat,
+                 clusterOptions=markerClusterOptions(),
+                 group="housing_cluster")
     updateTextInput(session, inputId="location", value = "")
   }
-    
+  
   )
   ##################ALL FILTERS############
   # observeEvent(input$filters,{
@@ -329,30 +359,6 @@ shinyServer(function(input, output,session) {
   #############Clear button###########
   observeEvent(input$clear, {
     leafletProxy('map')%>% setView(lng = -73.971035, lat = 40.775659, zoom = 12)
-<<<<<<< HEAD
-
-  })
-  ############Subway##############
-  observeEvent("Subway"%in% input$filters,{
-    
-    proxy<-leafletProxy("map")
-
-    if("Subway"%in% input$filters){
-      proxy %>%
-        addMarkers(data=sub.station, ~lng, ~lat,label = ~info,icon=icons(
-          iconUrl = "../output/metro.png",
-          iconWidth = 7, iconHeight = 7),group="subway")
-    }
-    else proxy%>%clearGroup(group="subway")
-
-  })
-
-  ###############bus###############
-  observeEvent("Bus"%in% input$filters,{
-    proxy<-leafletProxy("map")
-    if("Bus"%in% input$filters){
-      proxy %>%
-=======
     
   })
  
@@ -379,35 +385,11 @@ shinyServer(function(input, output,session) {
     
     if(p==TRUE){
       proxy %>% 
->>>>>>> origin/master
         addMarkers(data=bus.stop, ~lng, ~lat,label = ~info,icon=icons(
           iconUrl = "../output/icons8-Bus-48.png",
           iconWidth = 7, iconHeight = 7),layerId=as.character(bus.stop$info))
     }
     else proxy%>%removeMarker(layerId=as.character(bus.stop$info))
-<<<<<<< HEAD
-
-  })
-   ##############Crime#####################
-    observeEvent("Crime"%in% input$filters,{
-      proxy<-leafletProxy("map")
-
-      if("Crime"%in% input$filters){
-        proxy %>%
-          addPolygons(data=nyc, fillColor = ~pal(count), color = 'grey', weight = 1,
-                      fillOpacity = .6)
-      }
-      else proxy%>%clearShapes()
-
-    })
-
-  ##############Market#####################
-  observeEvent("Market"%in% input$filters,{
-    proxy<-leafletProxy("map")
-    if("Market"%in% input$filters){
-      proxy%>%
-        addMarkers(lat=markets$latitude, lng=markets$longitude,label=markets$DBA.Name, icon=icons(
-=======
     
   })
   
@@ -419,7 +401,6 @@ shinyServer(function(input, output,session) {
     if(p==TRUE){
       proxy%>%
         addMarkers(lat=markets$latitude, lng=markets$longitude,icon=icons(
->>>>>>> origin/master
           iconUrl = "../output/icons8-Shopping Cart-48.png",
           iconWidth = 7, iconHeight = 7, shadowWidth = 7, shadowHeight = 7),layerId=as.character(markets$License.Number))
     }
@@ -428,26 +409,6 @@ shinyServer(function(input, output,session) {
         removeMarker(layerId=as.character(markets$License.Number))
     }
   })
-<<<<<<< HEAD
-
-  ##############Resturant#####################
-  observeEvent("Restaurant"%in% input$filters,{
-    proxy<-leafletProxy("map")
-    if("Restaurant"%in% input$filters){
-      proxy%>%
-        addMarkers(lat=restaurant$lat, lng=restaurant$lon,label=restaurant$DBA,icon=icons(
-          iconUrl = "../output/icons8-French Fries-96.png",
-          iconWidth = 7, iconHeight = 7, shadowWidth = 7, shadowHeight = 7),layerId=as.character(restaurant$PHONE))
-    }
-    else{
-      proxy %>%
-        removeMarker(layerId=as.character(restaurant$PHONE))
-    }
-  })
-
-
-
-=======
   
   ##############Resturant#####################
   observeEvent(input$Restaurant,{
@@ -491,7 +452,6 @@ shinyServer(function(input, output,session) {
   # })
   
   
->>>>>>> origin/master
   #######for statistics####
   
   
