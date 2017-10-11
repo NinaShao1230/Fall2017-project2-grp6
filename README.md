@@ -4,23 +4,12 @@
 
 ![screenshot](doc/screenshot2.png)
 
-In this second project of GU4243/GR5243 Applied Data Science, we develop an *Exploratory Data Analysis and Visualization* shiny app on a topic of your choice using U.S. government open data released on the [data.gov](https://data.gov/) website. See [Project 2 Description](doc/project2_desc.md) for more details.  
 
-The **learning goals** for this project is:
-
-- business intelligence for data science
-- data cleaning
-- data visualization
-- systems development/design life cycle
-- shiny app/shiny server
-
-*The above general statement about project 2 can be removed once you are finished with your project. It is optional.
-
-## Project Title Lorem ipsum dolor sit amet
+## Manhattan Off-Campus Housing
 Term: Fall 2017
 
 + Team 6
-+ **New York City Off-Campus Housing**: 
++ **Manhattan Off-Campus Housing**: 
 + Team members
 	+ Pinren Chen: pc2751@columbia.edu
 	+ Lin Han: lh2810@columbia.edu
@@ -28,13 +17,13 @@ Term: Fall 2017
 	+ Chenyun Wu:cw2974@columbia.edu
 	+ Xiaoyu Zhou: xz2599@columbia.edu
 
-+ **Project summary**: In this project, we develop up an app demo to intergrate off-campus housing options and various factors university students may concern about while seeking off-campus housing. App is divided into two main pages: Rental  and ###. 
++ **Project summary**: In this project, we develop an app demo to intergrate off-campus housing options and various factors university students may concern about while seeking off-campus housing. App is divided into two main pages: Housing Explorer  and Recommendation. 
 
-    Housing Seeking tab shows rental house or apartment information in Manhattan area. Users have flexible search choices based on bedroom number, bathroom numbers and budget. Users could find out restaurant, transportation, market and safety condition nearby.
+    Housing explorer tab shows rental house or apartment information in Manhattan area. Users have flexible search choices based on bedroom numbers, bathroom numbers and budget. To make search easier, the Tab also map out restaurant, transportation, market and safety condition nearby.
 
-    Recommendation tab offers customed neighborhood recommendation for Columbia, NYU and Fordham University students. We offer five choices which people usually take into consideration while seeking off-campus housing. Users could choose top three preference among average rental price, safety, distance to school, market and restaurant. 
+    Recommendation tab offers customed neighborhood recommendation for Columbia, NYU and Fordham University students. We offer five choices that students usually take into consideration while seeking off-campus housing. Users could choose top three preference among average rental price, safety, distance to school, market and restaurant. 
  
-    We used data from data.gov, New York Open Data and Zillow. Also, we utilizd Zillow API, Google API and Nominatim API during data processing. For data sources detail, please kindly chechk #########.
+    We used data from data.gov, New York Open Data and Zillow. Also, we utilizd Zillow API, Google API and Nominatim API during data processing. For data sources detail, please kindly check data source description#####.
     
 
 + **Contribution statement**: ([default](doc/a_note_on_contributions.md)) All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
