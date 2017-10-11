@@ -23,7 +23,7 @@ shinyUI(
   navbarPage("Manhattan Off-Campus Housing",theme=shinythemes::shinytheme("yeti"),fluid=T,
            
              #####################################1. Home##############################################           
-             tabPanel("Home",
+             tabPanel("Home",icon=icon("home"),
     
                       div(class="home",
                           
@@ -44,9 +44,9 @@ shinyUI(
                       
                       #h5("Find Your Off-Campus Housing in Manhattan" ),
                       br(),
-                      h3("Find Your Off-Campus Housing in Manhattan" ),
+                      h3("Find Your Off-Campus Housing in Manhattan",style="color:white;font-family: Times New Roman;font-size: 300%;font-weight: bold;"),
                       br(),
-                      h4("Group6 - Fall 2017"),
+                      h4("Group6 - Fall 2017"style="color:white;font-family: Times New Roman;font-size: 200%;font-weight: bold;"),
                       br()
                   
                       #h4("")
@@ -118,55 +118,93 @@ shinyUI(
              #     ),#tabpanel
              ##################################2.2map###########################################
    
-             tabPanel("Housing Explorer",
+             tabPanel("Housing Explorer",icon = icon("map"),
                     
-                      fluidRow(
+ fluidRow(
                        
-                        column(width=2,style = "height:0px;width:330px;margin-top: 1px;display:inline-block;margin-right: 0px;",
+                        column(width=1,
+                               style = "width:330px;display:inline-block;margin-right: 0px;margin-bottom:0px;margin-top:0px;padding-right:0px;",
                                textInput(inputId="location",label="", value="", placeholder = "search your location...")
                                ),
-                         column(width=1,style = "margin-top: 25px;display:inline-block;margin-right: 0px;",
-                                actionButton("button1",label="Search", icon = icon("search"),style="padding:12px; font-size:80%;color: #fff; background-color: #337ab7; border-color: #2e6da4")
+                         column(width=1,
+                                style = "margin-top: 25px;display:inline-block;margin-right: 0px;margin-left:0px",
+                                actionButton("button1",label="", icon = icon("search"))
+                                             #,style="padding:12px; font-size:100%;color: #fff; background-color: #337ab7; border-color: #2e6da4")
                          ),
-                        column(width=1,style = "margin-top: 25px;display:inline-block;margin-right: 10px;",
-                               actionButton("button2",label="Clear search", style="padding:12px; font-size:80%;color: #fff; background-color: #337ab7; border-color: #2e6da4")
-                        ),
-                        column(width=1,style = "margin-top: 25px;display:inline-block",
+                        # column(width=1,style = "margin-top: 25px;display:inline-block;margin-right: 0px;",
+                        #        actionButton("button2",label="Clear search")
+                        #                     #, style="padding:10px; font-size:80%;color: #fff; background-color: #f29898")
+                        # ),
+                        column(width=1,
+                               style = "margin-top: 25px;display:inline-block;margin-right: 0px;",
                                dropdownButton(circle = FALSE,
-                                              label="min price",  status = "primary",
-                                 selectInput(inputId="min_price", label = "choose", choices = seq(0,10000,50))
+                                              label="Min price",  status = "default",
+                                              numericInput(inputId="min_price", label = "choose",value=0, min=0,max=1000000,step=1000)
                                )
+                               #selectInput(inputId="min_price",label="", choices = seq(0,10000,50) )
                                ),
-                        column(width=1,style = "margin-top: 25px;display:inline-block",
+                        column(width=1,
+                               style = "margin-top: 25px;display:inline-block;margin-right: 0px;",
                                dropdownButton(circle = FALSE,
-                                              label="max price",  status = "primary", 
-                                              selectInput(inputId="max_price", label = "choose", choices = seq(0,20000,50))
+                                              label="Max price",  status = "default", 
+                                              numericInput(inputId="max_price", value=1000000, label="choose",min=0,max=1000000,step=1000 )
                                )),
-                        column(width=1, style="margin-top: 25px;display:inline-block;margin-right: 20px;",
+                        column(width=1, 
+                               style="margin-top: 25px;display:inline-block;margin-right: 10px",
                                dropdownButton(circle = FALSE,
-                                              label = "Bedrooms 1+", status = "primary", 
+                                              label = "Bedrooms", status = "default",
                                               selectInput(inputId="min_bedrooms", label="choose", choices = c("studio"=0,"1b"=1,"2b"=2,"3b"=3,"4b"=4,"5b"=5,"6b"=6)
+
                                               ))
+                               # selectInput(inputId="min_bedrooms", label="",choices = c("min bedroom"=0,"studio"=1,"1b"=2,"2b"=3,"3b"=4,"4b"=5,"5b"=6,"6b"=7))
                                               ),
                         
-                        column(width=1,style = "margin-top: 25px;;display:inline-block;margin-right: 20px;",
+                        column(width=1,
+                               style = "margin-top: 25px;;display:inline-block;margin-right: 10px;",
                                dropdownButton(circle = FALSE,
-                                 label = "Bathroom 1+", status = "primary",
+                                 label = "Bathroom", status = "default",
                                  selectInput(inputId="min_bathrooms", label="choose", choices = c("studio"=0,"1b"=1,"2b"=2,"3b"=3,"4b"=4,"5b"=5,"6b"=6)
+                                 
                                  )
                                )),
-                        column(width=1, style = "margin-top: 25px;display:inline-block",
-                               actionButton("button2",label="Clear choices" ,
-                                            style="padding:12px; font-size:80%;color: #fff; background-color: #337ab7; border-color: #2e6da4"
+                        column(width=1, 
+                               style = "margin-top: 25px;display:inline-block;margin-right: 0px;",
+                               actionButton("button2",label="Clear choices" 
+                                            #,style="padding:12px; font-size:80%;color: #fff; background-color: #337ab7; border-color: #2e6da4"
                                             ))
-                        ,
-                        column(width=1,style = "margin-top: 25px;;display:inline-block;margin-right: 20px;",
-                               dropdownButton(circle = FALSE,
-                                              label = "Filters", status = "primary",
-                                              checkboxGroupInput("filters", label = "choose", choices = c("Crime","Bus","Subway","Market","Restaurant"))
-                                              )
-                               )
+                        # ,
+                        # column(width=1,style = "margin-top: 25px;;display:inline-block;margin-right: 0px;",
+                        #        dropdownButton(circle = FALSE,
+                        #                       label = "Filters", status = "primary",
+                        #                       checkboxGroupInput("filters", label = "choose", choices = c("Crime","Bus","Subway","Market","Restaurant"))
+                        #                       )
+                        #        )
                            ),
+                     
+                      # # checkboxInput("Crime", label = "Crime",value= FALSE),
+                      # # checkboxInput("Bus", label = "Bus",value= FALSE),
+                      # # checkboxInput("Subway",label="Subway",value = FALSE),
+                      # # checkboxInput("Market", label = "Market",value = FALSE),
+                      # # checkboxInput("Restaurant", label = "Restaurant",value= FALSE),
+                      # checkboxInput("filters",label = "filters",value = FALSE,width=NULL),
+                      mainPanel(fluidRow(
+                        column(width=2,absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
+                                             draggable = TRUE, top = "auto", left = "20", right = "auto", bottom = 60,
+                                             width = 300, height = "auto",
+                                             
+                                             h5("current rank"),
+                                             dataTableOutput("rank")
+                                             
+                        )),
+                        column(width=10,leafletOutput("map", width = "150%", height = 650))
+                        
+                      )
+                      )
+                                
+                        
+                      
+                      
+                      ),
                      
                       # # checkboxInput("Crime", label = "Crime",value= FALSE),
                       # # checkboxInput("Bus", label = "Bus",value= FALSE),
