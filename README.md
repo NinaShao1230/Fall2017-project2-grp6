@@ -2,7 +2,7 @@
 
 ### [Project Description](doc/project2_desc.md)
 
-![ScreenShot_Home ](doc/ScreenShot_Home .png)
+![ScreenShot](doc/ScreenShot_Home .png)
 
 
 ## Manhattan Off-Campus Housing
