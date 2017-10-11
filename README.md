@@ -34,14 +34,18 @@ Term: Fall 2017
 	 + filtered out data within our analysis area 
    + Data Processing:  xz2599, cw2974, ss5112, lh2810,  pc2751
 	 + mapped longitude and latitude into zip code and neighbourhood level using Google API and nominatim API in Python and R
-	 + 
+	 + based on analysis and visualization, processed data/geojson data in R and saved as RData
    + UI Design: cw2974,lh2810, pc2751
-
+	 + used css, javascript for the layout and various front-end effect  
    + Server- Home page: cw2974,lh2810
-
+	 + embedded gif and project title 
    + Server- Housing Explorer: xz2599, cw2974, ss5112, lh2810,  pc2751
+   	 + mapped restaurant, makret, bus stations, subway stations and crime area on New York map
+   	 + desgined and realized search and filter functions 
+	 + 
    + Server- Recommendation: ss5112, lh2810,  pc2751
-
+   	 + constructed a dynamic table
+   	 + 
 + **Code Location**: Codes for data cleaning and data processing are under doc folder. Server and UI are under app folder.  
 
 Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
