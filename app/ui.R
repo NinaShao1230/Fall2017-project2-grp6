@@ -126,7 +126,7 @@ shinyUI(
              #     ),#tabpanel
              ##################################2.2map###########################################
    
-             tabPanel("Maps", icon = icon("map"),
+             tabPanel("Housing Explorer", icon = icon("map"),
                     
                       fluidRow(
                        
@@ -178,7 +178,7 @@ shinyUI(
                                )),
                         column(width=1, 
                                style = "margin-top: 25px;display:inline-block;margin-right: 0px;",
-                               actionButton("button2",label="Clear choices" 
+                               actionButton("button2",label="Reset" 
                                             #,style="padding:12px; font-size:80%;color: #fff; background-color: #337ab7; border-color: #2e6da4"
                                             ))
                         # ,
@@ -255,7 +255,7 @@ shinyUI(
                         
                                h4("Set Your Own"),
                                selectInput("First",
-                                           label = "First Preferance",
+                                           label = "First Preference",
                                            choices = c("Rent",
                                                        "Safety",
                                                        "Distance",
@@ -264,7 +264,7 @@ shinyUI(
                                            selected="Rent"),
                                
                                selectInput("Second",
-                                           label = "Second Preferance",
+                                           label = "Second Preference",
                                            choices = c("Rent",
                                                        "Safety",
                                                        "Distance",
@@ -273,7 +273,7 @@ shinyUI(
                                            selected="Safety"),
                                
                                selectInput("Third",
-                                           label = "Third Preferance",
+                                           label = "Third Preference",
                                            choices = c("Rent",
                                                        "Safety",
                                                        "Distance",
