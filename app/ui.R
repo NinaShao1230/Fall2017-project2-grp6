@@ -213,7 +213,7 @@ shinyUI(
                                  
                                  absolutePanel(id="legend",
                                                fixed = TRUE,
-                                               draggable = TRUE, top = 200, left = "auto", right = 200, bottom = "auto",
+                                               draggable = TRUE, top = 140, left = "auto", right = 80, bottom = "auto",
                                                width = 125, height = 215,
                                                
                                                h5("Select Features"),
