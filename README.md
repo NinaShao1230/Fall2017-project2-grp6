@@ -27,13 +27,20 @@ Term: Fall 2017
     
 
 + **Contribution statement**: All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
-    +Data acquisition: ss5112,pc2751 
-    +Data Cleaning:  xz2599, cw2974, ss5112, lh2810,  pc2751
-    +Data Processing:  xz2599, cw2974, ss5112, lh2810,  pc2751
-    +UI Design: cw2974,lh2810, pc2751
-    +Server- Home page: cw2974,lh2810
-    +Server- Housing Explorer: xz2599, cw2974, ss5112, lh2810,  pc2751
-    +Server- Recommendation: ss5112, lh2810,  pc2751
+   + Data acquisition: ss5112,pc2751
+	 + searched and downloaded restaurant, crime, makret, bus stations, and subway stations from NYC open data and data.gov 
+	 + online scraped housing data and used google map api to get geoinformation 
+   + Data Cleaning:  xz2599, cw2974, ss5112, lh2810,  pc2751
+	 + filtered out data within our analysis area 
+   + Data Processing:  xz2599, cw2974, ss5112, lh2810,  pc2751
+	 + mapped longitude and latitude into zip code and neighbourhood level using Google API and nominatim API in Python and R
+	 + 
+   + UI Design: cw2974,lh2810, pc2751
+
+   + Server- Home page: cw2974,lh2810
+
+   + Server- Housing Explorer: xz2599, cw2974, ss5112, lh2810,  pc2751
+   + Server- Recommendation: ss5112, lh2810,  pc2751
 
 + **Code Location**: Codes for data cleaning and data processing are under doc folder. Server and UI are under app folder.  
 
