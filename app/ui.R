@@ -181,30 +181,7 @@ shinyUI(
                         #        )
                            ),
                      
-                      # # checkboxInput("Crime", label = "Crime",value= FALSE),
-                      # # checkboxInput("Bus", label = "Bus",value= FALSE),
-                      # # checkboxInput("Subway",label="Subway",value = FALSE),
-                      # # checkboxInput("Market", label = "Market",value = FALSE),
-                      # # checkboxInput("Restaurant", label = "Restaurant",value= FALSE),
-                      # checkboxInput("filters",label = "filters",value = FALSE,width=NULL),
-                      mainPanel(fluidRow(
-                        column(width=2,absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
-                                             draggable = TRUE, top = "auto", left = "20", right = "auto", bottom = 60,
-                                             width = 300, height = "auto",
-                                             
-                                             h5("current rank"),
-                                             dataTableOutput("rank")
-                                             
-                        )),
-                        column(width=10,leafletOutput("map", width = "150%", height = 650))
-                        
-                      )
-                      )
-                                
-                        
                       
-                      
-                      ),
                      
                       # # checkboxInput("Crime", label = "Crime",value= FALSE),
                       # # checkboxInput("Bus", label = "Bus",value= FALSE),
