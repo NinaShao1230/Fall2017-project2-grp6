@@ -2,7 +2,7 @@ packages.used=c("shiny", "shinydashboard", "leaflet",
                 "leaflet.extras", "shinythemes", "shinyWidgets",
                 "DT", "htmltools", "data.table", 
                 "devtools", "sp", "dplyr",
-                "tigris", "tm", "maptools",'broom',"httr","rgdal","RColorBrewer","XML","tidyr","ggplot2","zipcode")
+                "tigris", "tm", "maptools",'broom',"httr","rgdal","RColorBrewer","XML","tidyr","ggplot2","zipcode","geosphere","ggmap","tidyr")
 
 # check packages that need to be installed.
 packages.needed=setdiff(packages.used, 
