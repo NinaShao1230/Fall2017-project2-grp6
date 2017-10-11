@@ -296,7 +296,7 @@ shinyUI(
                       
                       column(9,
                             
-                             plotOutput('rentTrendgg')
+                             plotOutput('rentTrendgg',height =   "600px",width = "110%")
                                          
                              )
                         
