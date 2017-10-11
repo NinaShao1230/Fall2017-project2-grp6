@@ -2,7 +2,7 @@
 
 ### [Project Description](doc/project2_desc.md)
 
-![ScreenShot](doc/ScreenShot_Home .png)
+![screenshot](https://github.com/TZstatsADS/Fall2017-project2-grp6/tree/master/doc/1.png)
 
 
 ## Manhattan Off-Campus Housing
@@ -26,7 +26,7 @@ Term: Fall 2017
 + **Project summary**: We used data from data.gov, New York Open Data and Zillow. Also, we utilizd Zillow API, Google API and Nominatim API during data processing. For data sources detail, please kindly check data source [(description)](doc/DataSource.md).
     
 
-+ **Contribution statement**: All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
++ **Data Source**: All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
    + Data acquisition: ss5112,pc2751
 	 + searched and downloaded restaurant, crime, makret, bus stations, and subway stations from NYC open data and data.gov 
 	 + online scraped housing data and used google map api to get geoinformation 
