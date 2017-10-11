@@ -260,7 +260,7 @@ shinyServer(function(input, output,session) {
     isolate({
       remove=as.numeric(input$showPop$remove)
       map <- leafletProxy("map")
-      map %>% clearPopups()
+      
       if(remove==0){
         
         
@@ -270,7 +270,7 @@ shinyServer(function(input, output,session) {
         showPopupHover(lat, lng,housingFilter())   
       }
       else{
-        
+        map %>% clearPopups()
       }
      
       
