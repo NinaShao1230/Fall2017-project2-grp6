@@ -54,29 +54,7 @@ h1, h2, h3, h4 { font-weight: 400;}
     margin-bottom: 0;
 }
 
-.leaflet-label {
-	
-	background: green;
-	background-clip: padding-box;
-	border-color: #777;
-	border-color: rgba(0,0,0,0.45);
-	border-radius: 4px;
-	border-style: solid;
-	border-width: 4px;
-	color: white;
-	display: block;
-	font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
-	font-weight: bold;
-	padding: 1px 6px;
-	position: absolute;
-	-webkit-user-select: none;
-	   -moz-user-select: none;
-	    -ms-user-select: none;
-	        user-select: none;
-	pointer-events: none;
-	white-space: nowrap;
-	z-index: 500;
-}
+
 
 
 .div.outer {

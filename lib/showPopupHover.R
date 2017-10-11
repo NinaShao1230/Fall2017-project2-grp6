@@ -1,5 +1,8 @@
 showPopupHover <- function(lat, lng,housing) {
   selected_point <- housing[abs(housing$lat-lat)<0.0001 & abs(housing$lng-lng)<0.0001,]
+  if(nrow(selected_point)==0){
+    return()
+  }
   lotSize=NULL
   YearBuilt=NULL
   appliances=NULL
