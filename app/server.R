@@ -504,7 +504,10 @@ shinyServer(function(input, output,session) {
   new<-filter(region_rent, regionname %in% target)
   ggplot(data=new,
          aes(x=year, y=rent, colour=regionname)) +
-    geom_line()
+    geom_line()+
+    scale_x_continuous(breaks = round(seq(min(new$year), max(new$year), by = 1),1)) +
+    ylim(0,5000)
+    
   })
   
   
