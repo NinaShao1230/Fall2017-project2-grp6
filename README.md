@@ -13,7 +13,7 @@
 Term: Fall 2017
 
 + Team 6
-+ **Manhattan Off-Campus Housing**: 
++ **Manhattan Off-Campus Housing**: https://fall17grp6proj2.shinyapps.io/shinyrent1/
 + Team members
 	+ Pinren Chen: pc2751@columbia.edu
 	+ Lin Han: lh2810@columbia.edu
