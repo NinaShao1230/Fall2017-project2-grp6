@@ -26,7 +26,7 @@ Term: Fall 2017
 + **Project summary**: We used data from data.gov, New York Open Data and Zillow. Also, we utilizd Zillow API, Google API and Nominatim API during data processing. For data sources detail, please kindly check data source [(description)](doc/DataSource.md).
     
 
-+ **Contribution statement**: ([default](doc/a_note_on_contributions.md)) All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
++ **Contribution statement**: All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
 
 + **Code Location**: Codes for data cleaning and data processing are under doc folder. Server and UI are under app folder.  
 
