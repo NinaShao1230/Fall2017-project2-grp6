@@ -253,11 +253,7 @@ shinyServer(function(input, output,session) {
     isolate({
       remove=as.numeric(input$showPop$remove)
       map <- leafletProxy("map")
-<<<<<<< Updated upstream
-      map %>% clearPopups()
-=======
       
->>>>>>> Stashed changes
       if(remove==0){
         
         
@@ -267,15 +263,9 @@ shinyServer(function(input, output,session) {
         showPopupHover(lat, lng,housingFilter())   
       }
       else{
-<<<<<<< Updated upstream
-        
-      }
-     
-=======
         map %>% clearPopups()
       }
       
->>>>>>> Stashed changes
       
     })
   })
@@ -367,77 +357,6 @@ shinyServer(function(input, output,session) {
   # })
   
   #############Clear button###########
-<<<<<<< Updated upstream
-  #observeEvent(input$clear, {
-  #  leafletProxy('map')%>% setView(lng = -73.971035, lat = 40.775659, zoom = 12)
-
-  #})
- ############Subway##############
-    observeEvent(input$Subway,{
-      p<-input$Subway
-      proxy<-leafletProxy("map")
-      
-      if(p==TRUE){
-          proxy %>% 
-          addMarkers(data=sub.station, ~lng, ~lat,label = ~info,icon=icons(
-            iconUrl = "../output/icons8-Bus-48.png",
-            iconWidth = 7, iconHeight = 7),group="subway")
-        }
-      else proxy%>%clearGroup(group="subway")
-        
-    })
-  
-  ###############bus###############
-    observeEvent(input$Bus,{
-      p<-input$Bus
-      proxy<-leafletProxy("map")
-      
-      if(p==TRUE){
-        proxy %>% 
-          addMarkers(data=bus.stop, ~lng, ~lat,label = ~info,icon=icons(
-            iconUrl = "../output/bus.png",
-            iconWidth = 7, iconHeight = 7),layerId=as.character(bus.stop$info))
-      }
-      else proxy%>%removeMarker(layerId=as.character(bus.stop$info))
-        
-    })
-  
-  
-  ##############Market#####################
-    observeEvent(input$Market,{
-      p<- input$Market
-      proxy<-leafletProxy("map")
-      if(p==TRUE){
-        proxy%>%
-         addMarkers(lat=markets$latitude, lng=markets$longitude,icon=icons(
-            iconUrl = "../output/icons8-Shopping Cart-48.png",
-            iconWidth = 7, iconHeight = 7, shadowWidth = 7, shadowHeight = 7),layerId=as.character(markets$License.Number))
-      }
-      else{
-        proxy %>%
-          removeMarker(layerId=as.character(markets$License.Number))
-      }
-    })
-
-  ##############Resturant#####################
-    observeEvent(input$Restaurant,{
-      p<- input$Restaurant
-      proxy<-leafletProxy("map")
-      if(p==TRUE){
-        proxy%>%
-          addMarkers(lat=restaurant$lat, lng=restaurant$lon,icon=icons(
-            iconUrl = "../output/icons8-French Fries-96.png",
-            iconWidth = 7, iconHeight = 7, shadowWidth = 7, shadowHeight = 7),layerId=as.character(restaurant$CAMIS))
-      }
-      else{
-        proxy %>%
-          removeMarker(layerId=as.character(restaurant$CAMIS))
-      }
-    })
-    
-
-
-=======
   observeEvent(input$clear, {
     leafletProxy('map')%>% setView(lng = -73.971035, lat = 40.775659, zoom = 12)
     
@@ -533,7 +452,6 @@ shinyServer(function(input, output,session) {
   # })
   
   
->>>>>>> Stashed changes
   #######for statistics####
   
   
@@ -545,15 +463,15 @@ shinyServer(function(input, output,session) {
     school<-as.character(input$university)
     
     rank<-rank_all[,1:5]
-    if(school == "Columbia University"){
+    if(school == "columbia"){
       rank$Distance<-rank_all$Travel_Columbia
     }
-    if(school == "New York University"){
+    if(school == "nyu"){
       rank$Distance<-rank_all$Travel_NYU
     }
-    if(school == "Fordham University"){
+    if(school == "fordham"){
       rank$Distance<-rank_all$Travel_Fordham
-    }p
+    }
     
     #rank calculation 
     rank<-as.data.frame(rank)
@@ -602,17 +520,6 @@ shinyServer(function(input, output,session) {
   })
   
   output$rentTrendgg <- renderPlot({
-<<<<<<< Updated upstream
-  target <- as.character(input$regionname)
-  
-  new<-filter(region_rent, regionname %in% target)
-  ggplot(data=new,
-         aes(x=year, y=rent, colour=regionname)) +
-    geom_line()+
-    scale_x_continuous(breaks = round(seq(min(new$year), max(new$year), by = 1),1)) +
-    ylim(0,5000)
-    
-=======
     target <- as.character(input$regionname)
     
     new<-filter(region_rent, regionname %in% target)
@@ -621,7 +528,6 @@ shinyServer(function(input, output,session) {
       geom_line()+
       scale_x_continuous(breaks = round(seq(min(new$year), max(new$year), by = 1),1)) +
       ylim(0,5000)
->>>>>>> Stashed changes
   })
   
   
