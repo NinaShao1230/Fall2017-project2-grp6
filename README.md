@@ -44,8 +44,8 @@ Term: Fall 2017
    	 + desgined and realized search and filter functions 
 	 + realized rent information list based on filter and search 
 	 + mapped rent appartments and house information on New York map with pop-up function
-    + Server- Recommendation: xz2599, ss5112, lh2810,  pc2751
-   	 + constructed a dynamic rank table
+    + Server- Recommendation: xz2599, ss5112, lh2810,  pc2751 
+   	 + constructed a dynamic rank table 
    	 + ploted historical rent price at neighbourhood level
 + **Code Location**: Codes for data cleaning and data processing are under doc folder. Server and UI are under app folder.  
 
