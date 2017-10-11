@@ -239,13 +239,18 @@ shinyServer(function(input, output,session) {
       return()
     isolate({
       map <- leafletProxy("map")
+      remove<-as.numeric(input$goto$remove)
       
+      if(remove==1){
+        lat <- as.numeric(input$goto$lat)
+        lng <- as.numeric(input$goto$lng)
+        
+        map %>% setView(lng = lng, lat = lat, zoom = 16)  
+      }
       
-      
-      lat <- as.numeric(input$goto$lat)
-      lng <- as.numeric(input$goto$lng)
-      
-      map %>% setView(lng = lng, lat = lat, zoom = 16)
+      if(remove==0){
+        map %>% clearPopups() 
+      }
     })
   })
   # hover the list to show info
