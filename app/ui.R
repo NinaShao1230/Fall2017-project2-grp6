@@ -174,25 +174,37 @@ shinyUI(
                       # # checkboxInput("Market", label = "Market",value = FALSE),
                       # # checkboxInput("Restaurant", label = "Restaurant",value= FALSE),
                       # checkboxInput("filters",label = "filters",value = FALSE,width=NULL),
-                      mainPanel(fluidRow(
-                        column(width=2,absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
-                                             draggable = TRUE, top = "auto", left = "20", right = "auto", bottom = 60,
-                                             width = 300, height = "auto",
+                      mainPanel(
+                                                
+                    fluidRow(
+                          
+                        column(5, 
+                               h5("current rank"),
+                               dataTableOutput("rank")
                                              
-                                             h5("current rank"),
-                                             dataTableOutput("rank")
-                                             
-                        )),
-                        column(width=10,leafletOutput("map", width = "150%", height = 650))
+                        ),
                         
-                      )
-                      )
-                                
-                        
-                      
-                      
-                      ),
-               
+                        column(7,
+                               leafletOutput("map", width = "180%", height = 650),
+                               
+                               absolutePanel(id="legend",
+                                          fixed = TRUE,
+                                          draggable = TRUE, top = 200, left = "auto", right = 200, bottom = "auto",
+                                          width = 125, height = 215,
+                                          
+                                          h5("Select Features"),
+                                          checkboxInput("Crime", label = "Crime",value= FALSE),
+                                          checkboxInput("Bus", label = "Bus",value= FALSE),
+                                          checkboxInput("Subway",label="Subway",value = FALSE),
+                                          checkboxInput("Market", label = "Market",value = FALSE),
+                                          checkboxInput("Restaurant", label = "Restaurant",value= FALSE)                                 
+                                          
+                                        )#abs panel
+                                    
+                               )#column
+                               )#row
+                      )#main panel
+                      ),#tab panel
              
              
                #######################################3. Statistics######################################## 
