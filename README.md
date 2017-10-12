@@ -27,10 +27,10 @@ Term: Fall 2017
 
     Recommendation tab offers customed neighborhood recommendation for Columbia, NYU and Fordham University students. We offer five choices that students usually take into consideration while seeking off-campus housing. Users could choose top three preference among average rental price, safety, distance to school, market and restaurant. 
  
-+ **Project summary**: We used data from data.gov, New York Open Data and Zillow. Also, we utilizd Zillow API, Google API and Nominatim API during data processing. For data sources detail, please kindly check data source [(description)](doc/DataSource.md).
++ **Data Source**: We used data from data.gov, New York Open Data and Zillow. Also, we utilizd Zillow API, Google API and Nominatim API during data processing. For data sources detail, please kindly check data source [(description)](doc/DataSource.md).
     
 
-+ **Data Source**: All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
++ **Contribution statement**: All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
    + Data acquisition: ss5112,pc2751
 	 + searched and downloaded restaurant, crime, makret, bus stations, and subway stations from NYC open data and data.gov 
 	 + online scraped housing data and used google map api to get geoinformation 
@@ -48,7 +48,7 @@ Term: Fall 2017
    	 + desgined and realized search and filter functions 
 	 + realized rent information list based on filter and search 
 	 + mapped rent appartments and house information on New York map with pop-up function
-    + Server- Recommendation: xz2599, ss5112, lh2810,  pc2751 
+    + Server- Recommendation: xz2599, cw2974, ss5112, lh2810,  pc2751 
          + constructed a dynamic rank table 
          + ploted historical rent price at neighbourhood level
 + **Code Location**: Codes for data cleaning and data processing are under doc folder. Server and UI are under app folder.  
